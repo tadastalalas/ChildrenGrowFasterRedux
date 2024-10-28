@@ -78,7 +78,6 @@ namespace childrenGrowFaster
             CharacterObject templateCharacter = CharacterObject.FindFirst(character => character.Culture == heroCulture && character.Occupation == Occupation.Lord && character.IsFemale == true);
             Hero newHero = HeroCreator.CreateSpecialHero(templateCharacter, Hero.MainHero.HomeSettlement, Hero.MainHero.Clan, null);
             newHero.SetName(heroFullName, heroFirstName);
-            //newHero.CharacterObject.IsFemale = true; // does not work
             newHero.SetBirthDay(Hero.MainHero.BirthDay);
             newHero.Clan = heroClan;
             heroClan.Heroes.Add(newHero);

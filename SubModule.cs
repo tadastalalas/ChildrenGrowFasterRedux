@@ -88,7 +88,7 @@ namespace childrenGrowFaster
         private void spouseEvent()
         {
             Hero spouse = Hero.MainHero.Spouse; 
-            if (spouse != null  || spouse.IsPrisoner || spouse.CurrentSettlement == null)
+            if (spouse == null  || spouse.IsPrisoner || spouse.CurrentSettlement == null)
             {
                 return;
             }
@@ -109,7 +109,6 @@ namespace childrenGrowFaster
             }
         }
 
-        // event that randomly gives main hero's child a random hero trait
         private void giveRandomTraitToChild()
         {
             // make sure main hero has children 
@@ -138,6 +137,8 @@ namespace childrenGrowFaster
                 DefaultTraits.HorseArcherFightingSkills,
                 DefaultTraits.ArcherFIghtingSkills,
                 DefaultTraits.CrossbowmanStyle
+
+                // https://docs.bannerlordmodding.lt/modding/heroes/
             };
 
             TraitObject randomTrait = availableTraits[MBRandom.RandomInt(availableTraits.Length)];
@@ -147,3 +148,10 @@ namespace childrenGrowFaster
         }
     }
 }
+
+/* TODO:
+ * implement a way to manipulate where the bandit party roams. 
+ * figure out how to make it so when the spouse gets kidnapped the bandit party is tracked on the map.
+ this is so the player can manually rescue the spouse instead of waiting for a ransom offer event.
+ alternatively, I could make it so when the spouse is kidnapped, main hero gets a ransom offer notification for the spouse after X amount of days.
+*/
