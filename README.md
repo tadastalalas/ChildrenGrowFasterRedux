@@ -4,6 +4,9 @@
 
 The Children Grow Faster mod for Mount & Blade II: Bannerlord accelerates the growth rate of children in the game. This mod allows players to customize the growth rate of their children and other children in the game, providing a more dynamic and engaging gameplay experience.
 
+## Note 
+This repo is just the source code of the mod and is not meant to be built or compiled.
+
 ## Features
 
 - **Customizable Growth Rate**: Adjust the growth rate of children through the mod settings.
