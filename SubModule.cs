@@ -54,6 +54,11 @@ namespace childrenGrowFaster
             {
                 spouseEvent(); // 5% chance of wife being kidnapped by bandits if she is not pregnant and main hero is not in the same settlement.
             }
+
+            if (Hero.MainHero.Children != null)
+            {
+                giveRandomTraitToChild();
+            }
         }
 
         private void applyGrowthRateToPlayerChildren()
