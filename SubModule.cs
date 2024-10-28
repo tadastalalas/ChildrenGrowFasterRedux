@@ -6,6 +6,7 @@ using HarmonyLib;
 using TaleWorlds.CampaignSystem.Party;
 using System.Linq;
 using TaleWorlds.Library;
+using TaleWorlds.CampaignSystem.CharacterDevelopment;
 
 
 
@@ -106,14 +107,38 @@ namespace childrenGrowFaster
         // event that randomly gives main hero's child a random hero trait
         private void giveRandomTraitToChild()
         {
-            // if main hero has multiple children, pick one at  random
-            foreach (Hero h in Hero.MainHero.Children)
+            // make sure main hero has children 
+            if (Hero.MainHero.Children == null || Hero.MainHero.Children.Count == 0)
             {
-                if (h != null)
-                {
-                    
-                }
+                return;
             }
+
+            Hero randomChild = Hero.MainHero.Children[MBRandom.RandomInt(Hero.MainHero.Children.Count)];
+
+            // available traits 
+            TraitObject[] availableTraits = new TraitObject[]
+            {
+                DefaultTraits.Mercy,
+                DefaultTraits.Generosity,
+                DefaultTraits.Honor,
+                DefaultTraits.Valor,
+                DefaultTraits.Calculating,
+                
+                // skill traits 
+                DefaultTraits.ScoutSkills,
+                DefaultTraits.RogueSkills,
+                DefaultTraits.SergeantCommandSkills,
+                DefaultTraits.KnightFightingSkills,
+                DefaultTraits.CavalryFightingSkills,
+                DefaultTraits.HorseArcherFightingSkills,
+                DefaultTraits.ArcherFIghtingSkills,
+                DefaultTraits.CrossbowmanStyle
+            };
+
+            TraitObject randomTrait = availableTraits[MBRandom.RandomInt(availableTraits.Length)];
+            int randomTraitLevel = MBRandom.RandomInt(-1, 3);
+            randomChild.SetTraitLevel(randomTrait, randomTraitLevel);
+            InformationManager.DisplayMessage(new InformationMessage($"{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!"));
         }
     }
 }
