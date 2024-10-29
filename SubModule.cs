@@ -20,7 +20,7 @@ namespace childrenGrowFaster
         protected override void OnSubModuleLoad()
         {
             _harmony = new Harmony("childrenGrowFaster"); 
-            _harmony.PatchAll(); // SHOULD patch everything in the same namespace
+            _harmony.PatchAll(); 
         }
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
@@ -76,7 +76,7 @@ namespace childrenGrowFaster
             float growthRate = GlobalSettings<SubModuleSettings>.Instance.newGrowthRate;
             foreach (Hero h in Hero.AllAliveHeroes)
             {
-                if (h.IsChild && h.Age < 18 && (h.Father == Hero.MainHero || h.Mother == Hero.MainHero)) // checks if child is players child. also checks for players gender.
+                if (h.IsChild && h.Age < 18 && (h.Father == Hero.MainHero || h.Mother == Hero.MainHero))
                 {
                     h.SetBirthDay(h.BirthDay - CampaignTime.Days(growthRate + 1f)); // +1f triples growth rate essentially
                 }
