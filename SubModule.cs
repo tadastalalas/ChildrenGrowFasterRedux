@@ -15,6 +15,8 @@ namespace childrenGrowFaster
     public class SubModule : MBSubModuleBase
     {
         private Harmony _harmony;
+        private int daysSinceLastSpouseEvent = 0;
+        private int daysSinceLastTraitEvent = 0;
         protected override void OnSubModuleLoad()
         {
             _harmony = new Harmony("childrenGrowFaster"); 
@@ -50,14 +52,22 @@ namespace childrenGrowFaster
                     }
                 }
             }
-            if (Hero.MainHero.Spouse.IsPregnant == false)
+            // should be incremented every day but doesnt seem like it is. fix later
+            daysSinceLastSpouseEvent++; 
+            daysSinceLastTraitEvent++;
+            if (daysSinceLastSpouseEvent >= 5 && MBRandom.RandomFloat < 0.05f)
             {
-                spouseEvent(); // 5% chance of wife being kidnapped by bandits if she is not pregnant and main hero is not in the same settlement.
+                if (Hero.MainHero.Spouse != null && Hero.MainHero.Spouse.IsPregnant)
+                {
+                    spouseEvent();
+                    daysSinceLastSpouseEvent = 0;
+                }
             }
 
-            if (Hero.MainHero.Children != null)
+            if (daysSinceLastTraitEvent >= 5 && MBRandom.RandomFloat < 0.05f)
             {
                 giveRandomTraitToChild();
+                daysSinceLastTraitEvent = 0;
             }
         }
 
@@ -99,9 +109,10 @@ namespace childrenGrowFaster
                 .OrderBy(party => party.GetPosition().DistanceSquared(spouse.GetPosition()))
                 .FirstOrDefault();
 
+
             if (nearestBanditParty != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement)
             {
-               if (MBRandom.RandomFloat < 0.05f) // 5% chance of being kidnapped 
+               if (MBRandom.RandomFloat < 0.5f) // 5% chance of being kidnapped 
                 {
                     nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
                     InformationManager.DisplayMessage(new InformationMessage($"Bandits snuck into {spouse.Name}`s current settlment and kidnapped {spouse.Name}! get her back!"));
@@ -119,7 +130,6 @@ namespace childrenGrowFaster
 
             Hero randomChild = Hero.MainHero.Children[MBRandom.RandomInt(Hero.MainHero.Children.Count)];
 
-            // available traits 
             TraitObject[] availableTraits = new TraitObject[]
             {
                 DefaultTraits.Mercy,
