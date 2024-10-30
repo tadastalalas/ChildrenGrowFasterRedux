@@ -47,7 +47,6 @@ The mod settings can be configured through the Mod Configuration Menu (MCM). You
 The mod relies on several libraries and packages:
 
 - **Bannerlord.MCM**: For mod configuration.
-- **Bannerlord.ButterLib**: Utility library for Bannerlord mods.
 - **Bannerlord.Lib.Harmony**: For patching game methods.
 - **Bannerlord.ReferenceAssemblies**: Reference assemblies for various game modules.
 
