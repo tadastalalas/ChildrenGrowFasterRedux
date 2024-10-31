@@ -17,7 +17,11 @@ public class SubModuleSettings : AttributeGlobalSettings<SubModuleSettings>
     [SettingPropertyGroup("Children Growth Rate Settings")]
     public bool instantGrowth { get; set; } = false;
 
-    [SettingPropertyInteger("Adjust Pregnancy Duration", minValue: 1, maxValue: 36, Order = 3, RequireRestart = false, HintText = "Children will be born instantly.")]
+    [SettingPropertyBool("Affect Everyone", Order = 3, RequireRestart = false, HintText = "Mod affects all children & adults.")]
+    [SettingPropertyGroup("Children Growth Rate Settings")]
+    public bool affectEveryone { get; set; } = false;
+
+    [SettingPropertyInteger("Adjust Pregnancy Duration", minValue: 1, maxValue: 36, Order = 4, RequireRestart = false, HintText = "Children will be born instantly.")]
     [SettingPropertyGroup("Children Growth Rate Settings")]
     public int AdjsutPregnancyDuration { get; set; } = 36;
 

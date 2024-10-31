@@ -52,6 +52,10 @@ namespace childrenGrowFaster
                     }
                 }
             }
+            if (GlobalSettings<SubModuleSettings>.Instance.affectEveryone)
+            {
+                applyGrowthRateToEveryone();
+            }
             // should be incremented every day but doesnt seem like it is. fix later
             daysSinceLastSpouseEvent++; 
             daysSinceLastTraitEvent++;
@@ -89,6 +93,18 @@ namespace childrenGrowFaster
             foreach (Hero h in Hero.AllAliveHeroes)
             {
                 if (h.IsChild && h.Age < 18)
+                {
+                    h.SetBirthDay(h.BirthDay - CampaignTime.Days(growthRate + 1f));
+                }
+            }
+        }
+
+        private void applyGrowthRateToEveryone()
+        {
+            float growthRate = GlobalSettings<SubModuleSettings>.Instance.newGrowthRate;
+            foreach (Hero h in Hero.AllAliveHeroes)
+            {
+                if (h != null)
                 {
                     h.SetBirthDay(h.BirthDay - CampaignTime.Days(growthRate + 1f));
                 }
