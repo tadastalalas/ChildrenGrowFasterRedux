@@ -141,7 +141,11 @@ namespace childrenGrowFaster
                 {
                     nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
                     Campaign.Current.VisualTrackerManager.RegisterObject(nearestBanditParty);
-                    InformationManager.DisplayMessage(new InformationMessage("The bandit party has been marked on your map."));    
+                    InformationManager.DisplayMessage(new InformationMessage("The bandit party has been marked on your map."));
+                    if (nearestBanditParty.PrisonRoster.Contains(spouse.CharacterObject) == false)
+                    {
+                        isKidnapped = false;
+                    }
                 }
             }
         }
