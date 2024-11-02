@@ -7,6 +7,7 @@ using TaleWorlds.CampaignSystem.Party;
 using System.Linq;
 using TaleWorlds.Library;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
+using System.Diagnostics.CodeAnalysis;
 
 
 
@@ -57,22 +58,23 @@ namespace childrenGrowFaster
                 applyGrowthRateToEveryone();
             }
             // should be incremented every day but doesnt seem like it is. fix later
-            daysSinceLastSpouseEvent++; 
-            daysSinceLastTraitEvent++;
-            if (daysSinceLastSpouseEvent >= 5 && MBRandom.RandomFloat < 0.05f)
+            if (GlobalSettings<SubModuleSettings>.Instance.spouseEventsEnabled) 
             {
-                if (Hero.MainHero.Spouse != null && Hero.MainHero.Spouse.IsPregnant)
+                daysSinceLastSpouseEvent++;
+                if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
-                    spouseEvent();
-                    daysSinceLastSpouseEvent = 0;
+                    spouseEvent1();
                 }
             }
 
-            if (daysSinceLastTraitEvent >= 5 && MBRandom.RandomFloat < 0.05f)
+            if (GlobalSettings<SubModuleSettings>.Instance.randomTraitsEnabled)
             {
-                giveRandomTraitToChild();
-                daysSinceLastTraitEvent = 0;
-            }
+                daysSinceLastTraitEvent++;
+                if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.traitChance)
+                {
+                    giveRandomTraitToChild();
+                }
+            }  
         }
 
         private void applyGrowthRateToPlayerChildren()
@@ -111,7 +113,8 @@ namespace childrenGrowFaster
             }
         }
 
-        private void spouseEvent()
+        public bool isKidnapped { get; set; } = false;
+        private void spouseEvent1()
         {
             Hero spouse = Hero.MainHero.Spouse; 
             if (spouse == null  || spouse.IsPrisoner || spouse.CurrentSettlement == null)
@@ -131,9 +134,21 @@ namespace childrenGrowFaster
                if (MBRandom.RandomFloat < 0.5f) // 5% chance of being kidnapped 
                 {
                     nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
+                    isKidnapped = true;
                     InformationManager.DisplayMessage(new InformationMessage($"Bandits snuck into {spouse.Name}`s current settlment and kidnapped {spouse.Name}! get her back!"));
                 }
             }
+
+            if (isKidnapped == true)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        private void spouseEvent2()
+        {
+            Hero spouse = Hero.MainHero.Spouse;
+            
         }
 
         private void giveRandomTraitToChild()
