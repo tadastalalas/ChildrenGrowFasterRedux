@@ -133,15 +133,15 @@ namespace childrenGrowFaster
             {
                if (MBRandom.RandomFloat < 0.5f) // 5% chance of being kidnapped 
                 {
-                    nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
                     isKidnapped = true;
                     InformationManager.DisplayMessage(new InformationMessage($"Bandits snuck into {spouse.Name}`s current settlment and kidnapped {spouse.Name}! get her back!"));
                 }
-            }
 
-            if (isKidnapped == true)
-            {
-                throw new System.NotImplementedException();
+               if (isKidnapped == true)
+                {
+                    nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
+                    nearestBanditParty.CheckTracked(Hero.MainHero.CharacterObject); // possibly tracks the bandit party ?? not sure.  
+                }
             }
         }
 
