@@ -140,7 +140,8 @@ namespace childrenGrowFaster
                if (isKidnapped == true)
                 {
                     nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
-                    nearestBanditParty.CheckTracked(Hero.MainHero.CharacterObject); // possibly tracks the bandit party ?? not sure.  
+                    Campaign.Current.VisualTrackerManager.RegisterObject(nearestBanditParty);
+                    InformationManager.DisplayMessage(new InformationMessage("The bandit party has been marked on your map."));    
                 }
             }
         }
