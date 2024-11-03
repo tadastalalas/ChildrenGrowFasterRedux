@@ -57,23 +57,25 @@ namespace childrenGrowFaster
             {
                 applyGrowthRateToEveryone();
             }
-            // should be incremented every day but doesnt seem like it is. fix later
-            if (GlobalSettings<SubModuleSettings>.Instance.spouseEventsEnabled) 
+        
+            if (GlobalSettings<SubModuleSettings>.Instance.spouseEventsEnabled && Hero.MainHero.Spouse.IsPregnant == false) 
             {
-                daysSinceLastSpouseEvent++;
                 if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
+                    daysSinceLastSpouseEvent++;
                     spouseEvent1();
                 }
+                daysSinceLastSpouseEvent = 0;
             }
 
             if (GlobalSettings<SubModuleSettings>.Instance.randomTraitsEnabled)
             {
-                daysSinceLastTraitEvent++;
                 if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.traitChance)
                 {
+                    daysSinceLastTraitEvent++;
                     giveRandomTraitToChild();
                 }
+                daysSinceLastTraitEvent = 0; 
             }  
         }
 
@@ -116,7 +118,8 @@ namespace childrenGrowFaster
         public bool isKidnapped { get; set; } = false;
         private void spouseEvent1()
         {
-            Hero spouse = Hero.MainHero.Spouse; 
+            Hero spouse = Hero.MainHero.Spouse;
+            int daysSinceLastKidnapping = 0;
             if (spouse == null  || spouse.IsPrisoner || spouse.CurrentSettlement == null)
             {
                 return;
@@ -152,8 +155,12 @@ namespace childrenGrowFaster
 
         private void spouseEvent2()
         {
-            Hero spouse = Hero.MainHero.Spouse;
-            
+            throw new System.NotImplementedException(); 
+        }
+
+        private void spouseEvent3()
+        {
+            throw new System.NotImplementedException();
         }
 
         private void giveRandomTraitToChild()
@@ -197,7 +204,6 @@ namespace childrenGrowFaster
 
 /* TODO:
  * implement a way to manipulate where the bandit party roams. 
- * figure out how to make it so when the spouse gets kidnapped the bandit party is tracked on the map.
- this is so the player can manually rescue the spouse instead of waiting for a ransom offer event.
- alternatively, I could make it so when the spouse is kidnapped, main hero gets a ransom offer notification for the spouse after X amount of days.
+ * create a round popup that notifies the player that their spouse has been kidnapped.. https://docs.bannerlordmodding.lt/guides/custom_round_popup/
+ * come up with ideas for 2 more spouse events. 
 */
