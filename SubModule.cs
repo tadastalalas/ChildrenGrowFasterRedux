@@ -8,6 +8,8 @@ using System.Linq;
 using TaleWorlds.Library;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using System.Diagnostics.CodeAnalysis;
+using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.CampaignSystem.Settlements;
 
 
 
@@ -155,7 +157,21 @@ namespace childrenGrowFaster
 
         private void spouseEvent2()
         {
-            throw new System.NotImplementedException(); 
+            Hero spouse = Hero.MainHero.Spouse;
+            int askedAmount = MBRandom.RandomInt(10, 10000);
+            if (Hero.MainHero.Gold < askedAmount)
+            {
+                return;
+            }
+            else 
+            {
+                if (spouse != null && Hero.MainHero.Gold > askedAmount)
+                {
+                    InformationManager.DisplayMessage(new InformationMessage($"{spouse.Name} needs some money! They have asked for {askedAmount} gold!"));
+                    GiveGoldAction.ApplyBetweenCharacters(Hero.MainHero, spouse, askedAmount);
+                }
+            }
+
         }
 
         private void spouseEvent3()
