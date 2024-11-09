@@ -67,7 +67,7 @@ namespace childrenGrowFaster
                 daysSinceLastSpouseEvent++;
                 if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
-                    var events = new List<Action> { spouseEvent1, spouseEvent2, spouseEvent3, spouseEvent4 };
+                    var events = new List<Action> { spouseEvent1, spouseEvent2, spouseEvent3, spouseEvent4, spouseEvent5 };
                     events[MBRandom.RandomInt(4)]();
                     daysSinceLastSpouseEvent = 0;
                 }
@@ -81,7 +81,8 @@ namespace childrenGrowFaster
                     giveRandomTraitToChild();
                 }
                 daysSinceLastTraitEvent = 0; 
-            }  
+            }
+             
         }
 
 
@@ -154,6 +155,21 @@ namespace childrenGrowFaster
                     if (nearestBanditParty.PrisonRoster.Contains(spouse.CharacterObject) == false)
                     {
                         isKidnapped = false;
+                    }
+                }
+
+               while (isKidnapped == true)
+                {
+                    daysSinceLastKidnapping++;
+
+                    if (daysSinceLastKidnapping > 5)
+                    {
+                        InformationManager.DisplayMessage(new InformationMessage($"Your spouse has been in captivity  for {daysSinceLastKidnapping} days! You should consider rescuing them."));
+                    }
+                    else if (daysSinceLastKidnapping >= 10)
+                    {
+                        Hero.MainHero.SetPersonalRelation(spouse, daysSinceLastKidnapping);
+                        InformationManager.DisplayMessage(new InformationMessage($"Your spouse has been in captivity for {daysSinceLastKidnapping} days! Their relation with you has descreased by {daysSinceLastKidnapping}"));
                     }
                 }
             }
@@ -283,4 +299,5 @@ namespace childrenGrowFaster
  * implement a way to manipulate where the bandit party roams. 
  * create a round popup that notifies the player that their spouse has been kidnapped.. https://docs.bannerlordmodding.lt/guides/custom_round_popup/
  * come up with ideas for 2 more spouse events. 
+ * do something with keeping track of days since last event. ex : if daysSinceLastSpouseEvent > 30, then do something.
 */
