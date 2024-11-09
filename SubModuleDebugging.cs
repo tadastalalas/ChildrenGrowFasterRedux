@@ -90,7 +90,6 @@ namespace childrenGrowFaster
                     type.GetMethod("spouseEvent5", BindingFlags.NonPublic | BindingFlags.Instance)
 
                 };
-
                 foreach (var method in spouseEventMethods)
                 {
                     if (method == null)
@@ -129,8 +128,5 @@ namespace childrenGrowFaster
                 MarriageAction.Apply(Hero.MainHero, newHero);
             }
         }
-
-        
-        
     }
 }
