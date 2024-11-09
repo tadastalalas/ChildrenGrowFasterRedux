@@ -89,7 +89,8 @@ namespace childrenGrowFaster
                     type.GetMethod("spouseEvent1", BindingFlags.NonPublic | BindingFlags.Instance),
                     type.GetMethod("spouseEvent2", BindingFlags.NonPublic | BindingFlags.Instance),
                     type.GetMethod("spouseEvent3", BindingFlags.NonPublic | BindingFlags.Instance),
-                    type.GetMethod("spouseEvent4", BindingFlags.NonPublic | BindingFlags.Instance)
+                    type.GetMethod("spouseEvent4", BindingFlags.NonPublic | BindingFlags.Instance),
+                    type.GetMethod("spouseEvent5", BindingFlags.NonPublic | BindingFlags.Instance)
 
                 };
 
@@ -101,7 +102,7 @@ namespace childrenGrowFaster
                     }
                 }
 
-                MethodInfo selectedEvent = spouseEventMethods[MBRandom.RandomInt(4)];
+                MethodInfo selectedEvent = spouseEventMethods[MBRandom.RandomInt(5)];
                 selectedEvent.Invoke(subModule, null);
                 return "Spouse event fired.";
             }
