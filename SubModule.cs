@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System;
 using TaleWorlds.CampaignSystem.Roster;
 using TaleWorlds.CampaignSystem.Settlements;
+using System.Drawing;
 
 
 namespace childrenGrowFaster
@@ -142,14 +143,14 @@ namespace childrenGrowFaster
                if (MBRandom.RandomFloat < 0.5f && CampaignTime.Now.IsNightTime) // 5% chance of being kidnapped 
                 {
                     isKidnapped = true;
-                    InformationManager.DisplayMessage(new InformationMessage($"Bandits snuck into {spouse.Name}`s current settlment and kidnapped {spouse.Name}! get her back!"));
+                    InformationManager.DisplayMessage(new InformationMessage($"Bandits snuck into {spouse.Name}`s current settlment and kidnapped {spouse.Name}! get her back!", Colors.Green));
                 }
 
                if (isKidnapped == true)
                 {
                     nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
                     Campaign.Current.VisualTrackerManager.RegisterObject(nearestBanditParty);
-                    InformationManager.DisplayMessage(new InformationMessage("The bandit party has been marked on your map."));
+                    InformationManager.DisplayMessage(new InformationMessage("The bandit party has been marked on your map.", Colors.Red));
                     if (nearestBanditParty.PrisonRoster.Contains(spouse.CharacterObject) == false)
                     {
                         isKidnapped = false;
@@ -163,13 +164,13 @@ namespace childrenGrowFaster
             Hero spouse = Hero.MainHero.Spouse;
             while (spouse.CurrentSettlement != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement && isKidnapped == false)
             {
-                float currentGold = Hero.MainHero.Gold;
-                float gainedAmount = (float)MBRandom.RandomInt(500, 1000);
+                int currentGold = Hero.MainHero.Gold;
+                int gainedAmount = (int)MBRandom.RandomInt(500, 1000);
 
                 if (spouse != null && currentGold < 1000 || currentGold > 1000)
                 {
                     currentGold += gainedAmount;
-                    InformationManager.DisplayMessage(new InformationMessage($"Your spouse earned {gainedAmount} gold!"));
+                    InformationManager.DisplayMessage(new InformationMessage($"Your spouse earned {gainedAmount} gold!", Colors.Green));
                 }
             }
         }
@@ -186,7 +187,7 @@ namespace childrenGrowFaster
                 {
                     int randomProfit = MBRandom.RandomInt(100, 900);
                     workshop.ChangeGold(randomProfit);
-                    InformationManager.DisplayMessage(new InformationMessage($"Your spouse has boosted the profits of {workshop.Name} by {randomProfit} gold!"));
+                    InformationManager.DisplayMessage(new InformationMessage($"Your spouse has boosted the profits of {workshop.Name} by {randomProfit} gold!", Colors.Green));
                 }
             }
         }
@@ -213,13 +214,28 @@ namespace childrenGrowFaster
                                     if (field.GetValue(null) is SkillObject skill)
                                     {
                                         troop.Character.HeroObject?.AddSkillXp(skill, randomSkillXp);
-                                        InformationMessage message = new InformationMessage($"{spouse.Name}'s leadership & steward skills have increased the xp of your garrison in {s.Name}.");
+                                        InformationMessage message = new InformationMessage($"{spouse.Name}'s leadership & steward skills have increased the xp of your garrison in {s.Name}.", Colors.Green);
                                         InformationManager.DisplayMessage(message);
                                     }
                                 }
                             }
                         }
                     }
+                }
+            }
+        }
+
+        private void spouseEvent5()
+        {
+            Hero spouse = Hero.MainHero.Spouse;
+
+            foreach (Settlement s in Settlement.All)
+            {
+                if (s.Owner == Hero.MainHero && spouse.CurrentSettlement == s && s != null)
+                {
+                    int randomGold = MBRandom.RandomInt(100, 1000);
+                    s.Town.ChangeGold(randomGold);
+                    InformationManager.DisplayMessage(new InformationMessage($"{spouse.Name} has earned {randomGold} for {s.Name}!", Colors.Green));
                 }
             }
         }
