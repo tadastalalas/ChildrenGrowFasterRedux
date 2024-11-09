@@ -59,10 +59,7 @@ namespace childrenGrowFaster
                 CampaignTime currentTime = CampaignTime.Now;
                 CampaignTime newBday = currentTime - CampaignTime.Years(newAge);
                 targetChild.SetBirthDay(newBday);
-
                 return $"Set {targetChild.Name} to age {newAge:F1}.";
-
-
             }
             catch (Exception e)
             {
