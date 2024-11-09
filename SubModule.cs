@@ -211,35 +211,47 @@ namespace childrenGrowFaster
         private void spouseEvent4()
         {
             Hero spouse = Hero.MainHero.Spouse;
+
             foreach (Settlement s in Settlement.All)
             {
-                if (s.OwnerClan == Hero.MainHero.Clan && spouse.CurrentSettlement == s && Hero.MainHero.CurrentSettlement != spouse.CurrentSettlement && s != null)
+                if (!IsValidSettlement(s, spouse)) continue;
+
+                TroopRoster garrisonRoster = s.Town.GarrisonParty?.MemberRoster;
+                if (garrisonRoster == null) continue;
+                GiveXP(garrisonRoster, s, spouse);
+            }
+        }
+
+        private bool IsValidSettlement(Settlement s, Hero spouse)
+        {
+            return s.OwnerClan == Hero.MainHero.Clan
+                && spouse.CurrentSettlement == s
+                && Hero.MainHero.CurrentSettlement != spouse.CurrentSettlement
+                && s != null;
+        }
+
+        private void GiveXP(TroopRoster garrisonRoster, Settlement s, Hero spouse)
+        {
+            foreach (TroopRosterElement troop in garrisonRoster.GetTroopRoster())
+            {
+                if (troop.Character == null) continue;
+
+                var randomXP = MBRandom.RandomInt(100, 999);
+                var skills = typeof(DefaultSkills).GetFields();
+                foreach (var skill in skills)
                 {
-                    TroopRoster garrisonRoster = s.Town.GarrisonParty?.MemberRoster;
-                    if (garrisonRoster != null)
+                    if (skill.GetValue(null) is SkillObject skillObject)
                     {
-                        foreach (TroopRosterElement troop in garrisonRoster.GetTroopRoster())
-                        {
-                            if (troop.Character != null)
-                            {
-                                // give random xp to all default skills
-                                var randomSkillXp = MBRandom.RandomInt(100, 900);
-                                var skillFields = typeof(DefaultSkills).GetFields();
-                                foreach (var field in skillFields)
-                                {
-                                    if (field.GetValue(null) is SkillObject skill)
-                                    {
-                                        troop.Character.HeroObject?.AddSkillXp(skill, randomSkillXp);
-                                        InformationMessage message = new InformationMessage($"{spouse.Name}'s leadership & steward skills have increased the xp of your garrison in {s.Name}.", Colors.Green);
-                                        InformationManager.DisplayMessage(message);
-                                    }
-                                }
-                            }
-                        }
+                        troop.Character.HeroObject?.AddSkillXp(skillObject, randomXP);
+                        InformationMessage message = new InformationMessage(
+                            $"{spouse.Name}'s leadership & steward skills have increased the xp of garrisoned troops in {s.Name} by {randomXP}",
+                            Colors.Green);
+                        InformationManager.DisplayMessage(message);
                     }
                 }
             }
         }
+
 
         private void spouseEvent5()
         {
