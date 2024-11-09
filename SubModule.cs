@@ -10,6 +10,8 @@ using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using TaleWorlds.CampaignSystem.Settlements.Workshops;
 using System.Collections.Generic;
 using System;
+using TaleWorlds.CampaignSystem.Roster;
+using TaleWorlds.CampaignSystem.Settlements;
 
 
 namespace childrenGrowFaster
@@ -64,9 +66,8 @@ namespace childrenGrowFaster
                 daysSinceLastSpouseEvent++;
                 if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
-                    // pick randomly from 3 spouse events to happen at a 5% chance only one can happen at a time
-                    var events = new List<Action> { spouseEvent1, spouseEvent2, spouseEvent3 };
-                    events[MBRandom.RandomInt(3)]();
+                    var events = new List<Action> { spouseEvent1, spouseEvent2, spouseEvent3, spouseEvent4 };
+                    events[MBRandom.RandomInt(4)]();
                     daysSinceLastSpouseEvent = 0;
                 }
             }
@@ -81,6 +82,7 @@ namespace childrenGrowFaster
                 daysSinceLastTraitEvent = 0; 
             }  
         }
+
 
         private void applyGrowthRateToPlayerChildren()
         {
@@ -185,6 +187,39 @@ namespace childrenGrowFaster
                     int randomProfit = MBRandom.RandomInt(100, 900);
                     workshop.ChangeGold(randomProfit);
                     InformationManager.DisplayMessage(new InformationMessage($"Your spouse has boosted the profits of {workshop.Name} by {randomProfit} gold!"));
+                }
+            }
+        }
+
+        private void spouseEvent4()
+        {
+            Hero spouse = Hero.MainHero.Spouse;
+            foreach (Settlement s in Settlement.All)
+            {
+                if (s.OwnerClan == Hero.MainHero.Clan && spouse.CurrentSettlement == s && Hero.MainHero.CurrentSettlement != spouse.CurrentSettlement && s != null)
+                {
+                    TroopRoster garrisonRoster = s.Town.GarrisonParty?.MemberRoster;
+                    if (garrisonRoster != null)
+                    {
+                        foreach (TroopRosterElement troop in garrisonRoster.GetTroopRoster())
+                        {
+                            if (troop.Character != null)
+                            {
+                                // give random xp to all default skills
+                                var randomSkillXp = MBRandom.RandomInt(100, 900);
+                                var skillFields = typeof(DefaultSkills).GetFields();
+                                foreach (var field in skillFields)
+                                {
+                                    if (field.GetValue(null) is SkillObject skill)
+                                    {
+                                        troop.Character.HeroObject?.AddSkillXp(skill, randomSkillXp);
+                                        InformationMessage message = new InformationMessage($"{spouse.Name}'s leadership & steward skills have increased the xp of your garrison in {s.Name}.");
+                                        InformationManager.DisplayMessage(message);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
