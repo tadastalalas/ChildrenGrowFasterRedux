@@ -7,10 +7,9 @@ using TaleWorlds.CampaignSystem.Party;
 using System.Linq;
 using TaleWorlds.Library;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
-using System.Diagnostics.CodeAnalysis;
-using TaleWorlds.CampaignSystem.Actions;
-using TaleWorlds.CampaignSystem.Settlements;
-
+using TaleWorlds.CampaignSystem.Settlements.Workshops;
+using System.Collections.Generic;
+using System;
 
 
 namespace childrenGrowFaster
@@ -62,12 +61,14 @@ namespace childrenGrowFaster
         
             if (GlobalSettings<SubModuleSettings>.Instance.spouseEventsEnabled && Hero.MainHero.Spouse.IsPregnant == false) 
             {
+                daysSinceLastSpouseEvent++;
                 if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
-                    daysSinceLastSpouseEvent++;
-                    spouseEvent1();
+                    // pick randomly from 3 spouse events to happen at a 5% chance only one can happen at a time
+                    var events = new List<Action> { spouseEvent1, spouseEvent2, spouseEvent3 };
+                    events[MBRandom.RandomInt(3)]();
+                    daysSinceLastSpouseEvent = 0;
                 }
-                daysSinceLastSpouseEvent = 0;
             }
 
             if (GlobalSettings<SubModuleSettings>.Instance.randomTraitsEnabled)
@@ -136,7 +137,7 @@ namespace childrenGrowFaster
 
             if (nearestBanditParty != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement)
             {
-               if (MBRandom.RandomFloat < 0.5f) // 5% chance of being kidnapped 
+               if (MBRandom.RandomFloat < 0.5f && CampaignTime.Now.IsNightTime) // 5% chance of being kidnapped 
                 {
                     isKidnapped = true;
                     InformationManager.DisplayMessage(new InformationMessage($"Bandits snuck into {spouse.Name}`s current settlment and kidnapped {spouse.Name}! get her back!"));
@@ -158,25 +159,34 @@ namespace childrenGrowFaster
         private void spouseEvent2()
         {
             Hero spouse = Hero.MainHero.Spouse;
-            int askedAmount = MBRandom.RandomInt(10, 10000);
-            if (Hero.MainHero.Gold < askedAmount)
+            while (spouse.CurrentSettlement != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement && isKidnapped == false)
             {
-                return;
-            }
-            else 
-            {
-                if (spouse != null && Hero.MainHero.Gold > askedAmount)
+                float currentGold = Hero.MainHero.Gold;
+                float gainedAmount = (float)MBRandom.RandomInt(500, 1000);
+
+                if (spouse != null && currentGold < 1000 || currentGold > 1000)
                 {
-                    InformationManager.DisplayMessage(new InformationMessage($"{spouse.Name} needs some money! They have asked for {askedAmount} gold!"));
-                    GiveGoldAction.ApplyBetweenCharacters(Hero.MainHero, spouse, askedAmount);
+                    currentGold += gainedAmount;
+                    InformationManager.DisplayMessage(new InformationMessage($"Your spouse earned {gainedAmount} gold!"));
                 }
             }
-
         }
 
+        
         private void spouseEvent3()
         {
-            throw new System.NotImplementedException();
+            List<Workshop> workshops = new List<Workshop>();
+            workshops.AddRange(Hero.MainHero.OwnedWorkshops);
+            foreach (Workshop workshop in workshops)
+            {
+                Hero spouse = Hero.MainHero.Spouse; 
+                if (workshop.Settlement != Hero.MainHero.CurrentSettlement && workshop.Settlement == spouse.CurrentSettlement && workshop != null)
+                {
+                    int randomProfit = MBRandom.RandomInt(100, 900);
+                    workshop.ChangeGold(randomProfit);
+                    InformationManager.DisplayMessage(new InformationMessage($"Your spouse has boosted the profits of {workshop.Name} by {randomProfit} gold!"));
+                }
+            }
         }
 
         private void giveRandomTraitToChild()
