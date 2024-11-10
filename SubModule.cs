@@ -67,7 +67,7 @@ namespace childrenGrowFaster
                 daysSinceLastSpouseEvent++;
                 if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
-                    var events = new List<Action> { spouseEvent1, spouseEvent2, spouseEvent3, spouseEvent4, spouseEvent5 };
+                    var events = new List<Action> { spouseEvent1, spouseEvent2, spouseEvent3, spouseEvent4 };
                     events[MBRandom.RandomInt(4)]();
                     daysSinceLastSpouseEvent = 0;
                 }
@@ -84,7 +84,6 @@ namespace childrenGrowFaster
             }
              
         }
-
 
         private void applyGrowthRateToPlayerChildren()
         {
