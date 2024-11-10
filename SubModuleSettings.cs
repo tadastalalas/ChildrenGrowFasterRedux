@@ -26,19 +26,19 @@ public class SubModuleSettings : AttributeGlobalSettings<SubModuleSettings>
     [SettingPropertyGroup("Children Growth Rate Settings")]
     public int AdjsutPregnancyDuration { get; set; } = 36;
 
-    [SettingPropertyBool("Enable Spouse Events", Order = 6, RequireRestart = false, HintText = "Enables spouse events feature")]
+    [SettingPropertyBool("Enable Spouse Events", Order = 1, RequireRestart = false, HintText = "Enables spouse events feature")]
     [SettingPropertyGroup("Spouse Events")]
     public bool spouseEventsEnabled { get; set; } = false;
 
-    [SettingPropertyFloatingInteger("Event Chance", 0.05f, 1f, Order = 1, HintText = "The chance of the events happening")]
+    [SettingPropertyFloatingInteger("Event Chance", 0.05f, 1f, Order = 2, HintText = "The chance of the events happening")]
     [SettingPropertyGroup("Spouse Events")]
     public float eventChance { get; set; } = 0.05f;
 
-    [SettingPropertyBool("Random Traits for Children", Order = 2, HintText = "Enables random traits for children")]
+    [SettingPropertyBool("Random Traits for Children", Order = 1, HintText = "Enables random traits for children")]
     [SettingPropertyGroup("Random Traits")]
     public bool randomTraitsEnabled { get; set; } = false;
 
-    [SettingPropertyFloatingInteger("Trait Chance", 0.05f, 1f, "0.0", Order = 3, RequireRestart = false, HintText = "Chance of children gaining a random trait")]
+    [SettingPropertyFloatingInteger("Trait Chance", 0.05f, 1f, "0.0", Order = 2, RequireRestart = false, HintText = "Chance of children gaining a random trait")]
     [SettingPropertyGroup("Random Traits")]
     public float traitChance { get; set; } = 0.05f;
 
