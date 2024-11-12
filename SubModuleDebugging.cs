@@ -9,6 +9,10 @@ using TaleWorlds.MountAndBlade;
 using System.Reflection;
 using static TaleWorlds.Library.VirtualFolders.Win64_Shipping_Client;
 using TaleWorlds.Core;
+using TaleWorlds.CampaignSystem.ViewModelCollection.ClanManagement;
+using TaleWorlds.CampaignSystem.Settlements.Workshops;
+using TaleWorlds.CampaignSystem.Settlements;
+using System.Linq;
 
 namespace childrenGrowFaster
 {
@@ -67,7 +71,25 @@ namespace childrenGrowFaster
             }
         }
 
-        private static void CreateAndMarryNewHero()
+        [CommandLineFunctionality.CommandLineArgumentFunction("create_random_workshop", "debug")]
+        public static string CreateRandomWorkshops(List<string> strings)
+        {
+            try
+            {
+                if (Hero.MainHero.OwnedWorkshops.Count == 0)
+                {
+                    CreateRandomWorkshop();
+                    return "Random workshop created and assigned to main hero.";
+                }
+            }
+            catch (Exception e)
+            {
+                return $"Error: {e.Message}";
+            }
+            return "Main hero already owns a workshop.";
+        }
+
+            private static void CreateAndMarryNewHero()
         {
             // creating hero stuff (wish it could be more compact ;c )
             TextObject heroFullName = new TextObject("Debug Wife");
@@ -87,6 +109,21 @@ namespace childrenGrowFaster
             if (newHero != null)
             {
                 MarriageAction.Apply(Hero.MainHero, newHero);
+            }
+        }
+
+        private static void CreateRandomWorkshop()
+        {
+            Settlement nearestSettlement = Settlement.All
+                .Where(s => s.IsTown && s.Town != null)
+                .OrderBy(s => s.GetPosition().DistanceSquared(Hero.MainHero.GetPosition()))
+                .FirstOrDefault();
+
+            if (nearestSettlement != null && Hero.MainHero != null)
+            {
+                WorkshopType randomWorkshopType = WorkshopType.All.GetRandomElement();
+                Workshop workshop = nearestSettlement.Town.Workshops.FirstOrDefault(w => w.WorkshopType == randomWorkshopType);
+                Hero.MainHero.AddOwnedWorkshop(workshop);
             }
         }
     }

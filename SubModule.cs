@@ -65,7 +65,7 @@ namespace childrenGrowFaster
             if (GlobalSettings<SubModuleSettings>.Instance.spouseEventsEnabled && Hero.MainHero.Spouse.IsPregnant == false) 
             {
                 daysSinceLastSpouseEvent++;
-                if (MBRandom.RandomFloatNormal > GlobalSettings<SubModuleSettings>.Instance.eventChance)
+                if (MBRandom.RandomFloat > GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
                     int eventIndex = MBRandom.RandomInt(4);
                     switch (eventIndex)
@@ -204,7 +204,6 @@ namespace childrenGrowFaster
             }
         }
 
-        
         private void spouseEvent3()
         {
             List<Workshop> workshops = new List<Workshop>();
@@ -340,9 +339,9 @@ namespace childrenGrowFaster
 
         private void SpouseEventCounterHandle()
         {
+            float initialEventChance = GlobalSettings<SubModuleSettings>.Instance.eventChance;
             if (daysSinceLastSpouseEvent >= 5 || daysSinceLastSpouseEvent >= 10)
             {
-                float initialEventChance = GlobalSettings<SubModuleSettings>.Instance.eventChance;
                 GlobalSettings<SubModuleSettings>.Instance.eventChance = initialEventChance + 0.5f;
                 if (daysSinceLastSpouseEvent == 0)
                 {
