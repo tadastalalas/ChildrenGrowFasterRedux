@@ -67,8 +67,22 @@ namespace childrenGrowFaster
                 daysSinceLastSpouseEvent++;
                 if (MBRandom.RandomFloatNormal > GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
-                    var events = new List<Action> { spouseEvent1, spouseEvent2, spouseEvent3, spouseEvent4 };
-                    events[MBRandom.RandomInt(4)].Invoke();
+                    int eventIndex = MBRandom.RandomInt(4);
+                    switch (eventIndex)
+                    {
+                        case 0:
+                            spouseEvent1();
+                            break;
+                        case 1:
+                            spouseEvent2();
+                            break;
+                        case 2:
+                            spouseEvent3();
+                            break;
+                        case 3:
+                            spouseEvent4();
+                            break;
+                    }
                     daysSinceLastSpouseEvent = 0;
                 }
             }
