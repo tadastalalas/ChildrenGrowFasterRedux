@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System;
 using TaleWorlds.CampaignSystem.Roster;
 using TaleWorlds.CampaignSystem.Settlements;
-using System.Drawing;
+
 
 
 namespace childrenGrowFaster
@@ -65,10 +65,10 @@ namespace childrenGrowFaster
             if (GlobalSettings<SubModuleSettings>.Instance.spouseEventsEnabled && Hero.MainHero.Spouse.IsPregnant == false) 
             {
                 daysSinceLastSpouseEvent++;
-                if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
+                if (MBRandom.RandomFloatNormal > GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
                     var events = new List<Action> { spouseEvent1, spouseEvent2, spouseEvent3, spouseEvent4 };
-                    events[MBRandom.RandomInt(4)]();
+                    events[MBRandom.RandomInt(4)].Invoke();
                     daysSinceLastSpouseEvent = 0;
                 }
             }
@@ -137,8 +137,8 @@ namespace childrenGrowFaster
                 .OrderBy(party => party.GetPosition().DistanceSquared(spouse.GetPosition()))
                 .FirstOrDefault();
 
-
-            if (nearestBanditParty != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement)
+            
+            while (nearestBanditParty != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement)
             {
                if (MBRandom.RandomFloat < 0.5f && CampaignTime.Now.IsNightTime) // 5% chance of being kidnapped 
                 {
@@ -157,7 +157,7 @@ namespace childrenGrowFaster
                     }
                 }
 
-               while (isKidnapped == true)
+               if (isKidnapped == true)
                 {
                     daysSinceLastKidnapping++;
 
@@ -251,22 +251,6 @@ namespace childrenGrowFaster
             }
         }
 
-
-        private void spouseEvent5()
-        {
-            Hero spouse = Hero.MainHero.Spouse;
-
-            foreach (Settlement s in Settlement.All)
-            {
-                if (s.Owner == Hero.MainHero && spouse.CurrentSettlement == s && s != null)
-                {
-                    int randomGold = MBRandom.RandomInt(100, 1000);
-                    s.Town.ChangeGold(randomGold);
-                    InformationManager.DisplayMessage(new InformationMessage($"{spouse.Name} has earned {randomGold} for {s.Name}!", Colors.Green));
-                }
-            }
-        }
-
         private void giveRandomTraitToChild()
         {
             // make sure main hero has children 
@@ -302,6 +286,55 @@ namespace childrenGrowFaster
             int randomTraitLevel = MBRandom.RandomInt(-1, 3);
             randomChild.SetTraitLevel(randomTrait, randomTraitLevel);
             InformationManager.DisplayMessage(new InformationMessage($"{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!"));
+        }
+
+        [CommandLineFunctionality.CommandLineArgumentFunction("fire_spouse_event", "debug")]
+        private static string FireSpouseEvent(List<string> strings)
+        {
+           if (Hero.MainHero.Spouse != null && Hero.MainHero.Spouse.IsPregnant == false)
+            {
+                SubModule subModule = new SubModule();
+                List<Action> actions = new List<Action>();
+                if (actions != null)
+                {
+                    actions.Add(subModule.spouseEvent1);
+                    actions.Add(subModule.spouseEvent2);
+                    actions.Add(subModule.spouseEvent3);
+                    actions.Add(subModule.spouseEvent4);
+                }
+                if (actions!.Count == 0)
+                {
+                    return "Error: Could not find spouse event method.";
+                }
+                foreach (var action in actions)
+                {
+                    if (action == null)
+                    {
+                        return "Error: Could not find spouse event method.";
+                    }
+                    else
+                    {
+                        Action selectedAction = actions[MBRandom.RandomInt(4)];
+                        selectedAction.Invoke();
+                        return "Spouse event fired.";
+                    }
+                }
+            }
+            return "Error: Main hero has no spouse.";
+        }
+
+
+        private void SpouseEventCounterHandle()
+        {
+            if (daysSinceLastSpouseEvent >= 5 || daysSinceLastSpouseEvent >= 10)
+            {
+                float initialEventChance = GlobalSettings<SubModuleSettings>.Instance.eventChance;
+                GlobalSettings<SubModuleSettings>.Instance.eventChance = initialEventChance + 0.5f;
+                if (daysSinceLastSpouseEvent == 0)
+                {
+                    GlobalSettings<SubModuleSettings>.Instance.eventChance = initialEventChance;
+                }
+            }
         }
     }
 }

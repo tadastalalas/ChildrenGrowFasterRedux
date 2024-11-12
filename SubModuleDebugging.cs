@@ -67,45 +67,6 @@ namespace childrenGrowFaster
             }
         }
 
-        [CommandLineFunctionality.CommandLineArgumentFunction("fire_spouse_event", "debug")]
-        public static string FireSpouseEvent(List<string> strings)
-        {
-            if (Hero.MainHero.Spouse != null)
-            {
-                SubModule subModule = new SubModule();
-
-                if (subModule == null)
-                {
-                    return "Error: SubModule instance is null.";
-                }
-
-                Type type = subModule.GetType();
-
-                List<MethodInfo> spouseEventMethods = new List<MethodInfo>
-                {
-                    type.GetMethod("spouseEvent1", BindingFlags.NonPublic | BindingFlags.Instance),
-                    type.GetMethod("spouseEvent2", BindingFlags.NonPublic | BindingFlags.Instance),
-                    type.GetMethod("spouseEvent3", BindingFlags.NonPublic | BindingFlags.Instance),
-                    type.GetMethod("spouseEvent4", BindingFlags.NonPublic | BindingFlags.Instance),
-                    type.GetMethod("spouseEvent5", BindingFlags.NonPublic | BindingFlags.Instance)
-
-                };
-                foreach (var method in spouseEventMethods)
-                {
-                    if (method == null)
-                    {
-                        return "Error: Could not find spouse event method.";
-                    }
-                }
-
-                MethodInfo selectedEvent = spouseEventMethods[MBRandom.RandomInt(5)];
-                selectedEvent.Invoke(subModule, null);
-                return "Spouse event fired.";
-            }
-            return "Error: Main hero has no spouse.";
-        }
-
-
         private static void CreateAndMarryNewHero()
         {
             // creating hero stuff (wish it could be more compact ;c )

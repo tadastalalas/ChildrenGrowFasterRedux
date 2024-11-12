@@ -17,7 +17,7 @@ namespace childrenGrowFaster
         {
             try
             {
-                if (GlobalSettings<SubModuleSettings>.Instance.AdjsutPregnancyDuration > 0) 
+                if (GlobalSettings<SubModuleSettings>.Instance.AdjsutPregnancyDuration > 0 && GlobalSettings<SubModuleSettings>.Instance.enablePregnancyDuration == true) 
                 {
                     __result = GlobalSettings<SubModuleSettings>.Instance.AdjsutPregnancyDuration;
                 }
