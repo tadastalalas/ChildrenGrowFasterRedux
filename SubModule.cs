@@ -24,8 +24,8 @@ namespace childrenGrowFaster
         private int daysSinceLastTraitEvent = 0;
         protected override void OnSubModuleLoad()
         {
-            _harmony = new Harmony("childrenGrowFaster"); 
-            _harmony.PatchAll(); 
+            _harmony = new Harmony("childrenGrowFaster");
+            _harmony.PatchAll();
         }
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
@@ -33,6 +33,8 @@ namespace childrenGrowFaster
             if (game.GameType is Campaign)
             {
                 CampaignEvents.DailyTickEvent.AddNonSerializedListener(this, OnDailyTick);
+                CampaignGameStarter campaignStarter = (CampaignGameStarter)gameStarterObject;
+                campaignStarter.AddBehavior(new SubModuleBehaviour());
             }
         }
 
@@ -61,31 +63,6 @@ namespace childrenGrowFaster
             {
                 applyGrowthRateToEveryone();
             }
-        
-            if (GlobalSettings<SubModuleSettings>.Instance.spouseEventsEnabled && Hero.MainHero.Spouse.IsPregnant == false) 
-            {
-                daysSinceLastSpouseEvent++;
-                if (MBRandom.RandomFloat > GlobalSettings<SubModuleSettings>.Instance.eventChance)
-                {
-                    int eventIndex = MBRandom.RandomInt(4);
-                    switch (eventIndex)
-                    {
-                        case 0:
-                            spouseEvent1();
-                            break;
-                        case 1:
-                            spouseEvent2();
-                            break;
-                        case 2:
-                            spouseEvent3();
-                            break;
-                        case 3:
-                            spouseEvent4();
-                            break;
-                    }
-                    daysSinceLastSpouseEvent = 0;
-                }
-            }
 
             if (GlobalSettings<SubModuleSettings>.Instance.randomTraitsEnabled)
             {
@@ -94,9 +71,9 @@ namespace childrenGrowFaster
                     daysSinceLastTraitEvent++;
                     giveRandomTraitToChild();
                 }
-                daysSinceLastTraitEvent = 0; 
+                daysSinceLastTraitEvent = 0;
             }
-             
+
         }
 
         private void applyGrowthRateToPlayerChildren()
@@ -135,134 +112,7 @@ namespace childrenGrowFaster
             }
         }
 
-        public bool isKidnapped { get; set; } = false;
-        private void spouseEvent1()
-        {
-            Hero spouse = Hero.MainHero.Spouse;
-            int daysSinceLastKidnapping = 0;
-            if (spouse == null  || spouse.IsPrisoner || spouse.CurrentSettlement == null)
-            {
-                return;
-            }
-
-            // find nearest bandit party
-            var nearestBanditParty = MobileParty.All
-                .Where(party => party.IsBandit && party.IsActive && party.CurrentSettlement == null)
-                .OrderBy(party => party.GetPosition().DistanceSquared(spouse.GetPosition()))
-                .FirstOrDefault();
-
-            
-            while (nearestBanditParty != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement)
-            {
-               if (MBRandom.RandomFloat < 0.5f && CampaignTime.Now.IsNightTime) // 5% chance of being kidnapped 
-                {
-                    isKidnapped = true;
-                    InformationManager.DisplayMessage(new InformationMessage($"Bandits snuck into {spouse.Name}`s current settlment and kidnapped {spouse.Name}! get her back!", Colors.Green));
-                }
-
-               if (isKidnapped == true)
-                {
-                    nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
-                    Campaign.Current.VisualTrackerManager.RegisterObject(nearestBanditParty);
-                    InformationManager.DisplayMessage(new InformationMessage("The bandit party has been marked on your map.", Colors.Red));
-                    if (nearestBanditParty.PrisonRoster.Contains(spouse.CharacterObject) == false)
-                    {
-                        isKidnapped = false;
-                    }
-                }
-
-               if (isKidnapped == true)
-                {
-                    daysSinceLastKidnapping++;
-
-                    if (daysSinceLastKidnapping > 5)
-                    {
-                        InformationManager.DisplayMessage(new InformationMessage($"Your spouse has been in captivity  for {daysSinceLastKidnapping} days! You should consider rescuing them."));
-                    }
-                    else if (daysSinceLastKidnapping >= 10)
-                    {
-                        Hero.MainHero.SetPersonalRelation(spouse, daysSinceLastKidnapping);
-                        InformationManager.DisplayMessage(new InformationMessage($"Your spouse has been in captivity for {daysSinceLastKidnapping} days! Their relation with you has descreased by {daysSinceLastKidnapping}"));
-                    }
-                }
-            }
-        }
-
-        private void spouseEvent2()
-        {
-            Hero spouse = Hero.MainHero.Spouse;
-            while (spouse.CurrentSettlement != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement && isKidnapped == false)
-            {
-                int currentGold = Hero.MainHero.Gold;
-                int gainedAmount = (int)MBRandom.RandomInt(500, 1000);
-
-                if (spouse != null && currentGold < 1000 || currentGold > 1000)
-                {
-                    currentGold += gainedAmount;
-                    InformationManager.DisplayMessage(new InformationMessage($"Your spouse earned {gainedAmount} gold!", Colors.Green));
-                }
-            }
-        }
-
-        private void spouseEvent3()
-        {
-            List<Workshop> workshops = new List<Workshop>();
-            workshops.AddRange(Hero.MainHero.OwnedWorkshops);
-            foreach (Workshop workshop in workshops)
-            {
-                Hero spouse = Hero.MainHero.Spouse; 
-                if (workshop.Settlement != Hero.MainHero.CurrentSettlement && workshop.Settlement == spouse.CurrentSettlement && workshop != null)
-                {
-                    int randomProfit = MBRandom.RandomInt(100, 900);
-                    workshop.ChangeGold(randomProfit);
-                    InformationManager.DisplayMessage(new InformationMessage($"Your spouse has boosted the profits of {workshop.Name} by {randomProfit} gold!", Colors.Green));
-                }
-            }
-        }
-
-        private void spouseEvent4()
-        {
-            Hero spouse = Hero.MainHero.Spouse;
-
-            foreach (Settlement s in Settlement.All)
-            {
-                if (!IsValidSettlement(s, spouse)) continue;
-
-                TroopRoster garrisonRoster = s.Town.GarrisonParty?.MemberRoster;
-                if (garrisonRoster == null) continue;
-                GiveXP(garrisonRoster, s, spouse);
-            }
-        }
-
-        private bool IsValidSettlement(Settlement s, Hero spouse)
-        {
-            return s.OwnerClan == Hero.MainHero.Clan
-                && spouse.CurrentSettlement == s
-                && Hero.MainHero.CurrentSettlement != spouse.CurrentSettlement
-                && s != null;
-        }
-
-        private void GiveXP(TroopRoster garrisonRoster, Settlement s, Hero spouse)
-        {
-            foreach (TroopRosterElement troop in garrisonRoster.GetTroopRoster())
-            {
-                if (troop.Character == null) continue;
-
-                var randomXP = MBRandom.RandomInt(100, 999);
-                var skills = typeof(DefaultSkills).GetFields();
-                foreach (var skill in skills)
-                {
-                    if (skill.GetValue(null) is SkillObject skillObject)
-                    {
-                        troop.Character.HeroObject?.AddSkillXp(skillObject, randomXP);
-                        InformationMessage message = new InformationMessage(
-                            $"{spouse.Name}'s leadership & steward skills have increased the xp of garrisoned troops in {s.Name} by {randomXP}",
-                            Colors.Green);
-                        InformationManager.DisplayMessage(message);
-                    }
-                }
-            }
-        }
+       
 
         private void giveRandomTraitToChild()
         {
@@ -301,54 +151,6 @@ namespace childrenGrowFaster
             InformationManager.DisplayMessage(new InformationMessage($"{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!"));
         }
 
-        [CommandLineFunctionality.CommandLineArgumentFunction("fire_spouse_event", "debug")]
-        private static string FireSpouseEvent(List<string> strings)
-        {
-           if (Hero.MainHero.Spouse != null && Hero.MainHero.Spouse.IsPregnant == false)
-            {
-                SubModule subModule = new SubModule();
-                List<Action> actions = new List<Action>();
-                if (actions != null)
-                {
-                    actions.Add(subModule.spouseEvent1);
-                    actions.Add(subModule.spouseEvent2);
-                    actions.Add(subModule.spouseEvent3);
-                    actions.Add(subModule.spouseEvent4);
-                }
-                if (actions!.Count == 0)
-                {
-                    return "Error: Could not find spouse event method.";
-                }
-                foreach (var action in actions)
-                {
-                    if (action == null)
-                    {
-                        return "Error: Could not find spouse event method.";
-                    }
-                    else
-                    {
-                        Action selectedAction = actions[MBRandom.RandomInt(4)];
-                        selectedAction.Invoke();
-                        return "Spouse event fired.";
-                    }
-                }
-            }
-            return "Error: Main hero has no spouse.";
-        }
-
-
-        private void SpouseEventCounterHandle()
-        {
-            float initialEventChance = GlobalSettings<SubModuleSettings>.Instance.eventChance;
-            if (daysSinceLastSpouseEvent >= 5 || daysSinceLastSpouseEvent >= 10)
-            {
-                GlobalSettings<SubModuleSettings>.Instance.eventChance = initialEventChance + 0.5f;
-                if (daysSinceLastSpouseEvent == 0)
-                {
-                    GlobalSettings<SubModuleSettings>.Instance.eventChance = initialEventChance;
-                }
-            }
-        }
     }
 }
 
