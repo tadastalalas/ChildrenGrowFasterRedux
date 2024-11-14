@@ -26,6 +26,7 @@ namespace childrenGrowFaster
         {
             _harmony = new Harmony("childrenGrowFaster");
             _harmony.PatchAll();
+            InformationManager.DisplayMessage(new InformationMessage("childrenGrowFaster loaded succesfully.", Colors.Green));
         }
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {

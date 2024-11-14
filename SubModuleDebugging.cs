@@ -4,12 +4,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
-using childrenGrowFaster;
-using TaleWorlds.MountAndBlade;
-using System.Reflection;
-using static TaleWorlds.Library.VirtualFolders.Win64_Shipping_Client;
 using TaleWorlds.Core;
-using TaleWorlds.CampaignSystem.ViewModelCollection.ClanManagement;
 using TaleWorlds.CampaignSystem.Settlements.Workshops;
 using TaleWorlds.CampaignSystem.Settlements;
 using System.Linq;
@@ -89,7 +84,7 @@ namespace childrenGrowFaster
             return "Main hero already owns a workshop.";
         }
 
-            private static void CreateAndMarryNewHero()
+        private static void CreateAndMarryNewHero()
         {
             // creating hero stuff (wish it could be more compact ;c )
             TextObject heroFullName = new TextObject("Debug Wife");

@@ -1,6 +1,8 @@
 ﻿using MCM.Abstractions.Attributes;
 using MCM.Abstractions.Attributes.v2;
 using MCM.Abstractions.Base.Global;
+using System;
+using TaleWorlds.Core;
 
 namespace childrenGrowFaster
 {
@@ -26,9 +28,9 @@ namespace childrenGrowFaster
         [SettingPropertyGroup("Spouse Events")]
         public bool spouseEventsEnabled { get; set; } = false;
 
-        [SettingPropertyFloatingInteger("Event Chance", 0.05f, 1f, Order = 2, RequireRestart = false, HintText = "The chance of the events happening")]
+        [SettingPropertyInteger("Event Chance", 1, 10, Order = 2, RequireRestart = false, HintText = "The chance of the events happening")]
         [SettingPropertyGroup("Spouse Events")]
-        public float eventChance { get; set; } = 0.05f;
+        public int eventChance { get; set; } = 1;
 
         [SettingPropertyBool("Random Traits for Children", Order = 1, HintText = "Enables random traits for children")]
         [SettingPropertyGroup("Random Traits")]
