@@ -113,8 +113,6 @@ namespace childrenGrowFaster
             }
         }
 
-       
-
         private void giveRandomTraitToChild()
         {
             // make sure main hero has children 

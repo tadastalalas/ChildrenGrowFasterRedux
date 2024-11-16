@@ -51,42 +51,34 @@ namespace childrenGrowFaster
 
         private void SpouseEvent1()
         {
-            Hero spouse = Hero.MainHero.Spouse;
             int daysSinceLastKidnapping = 0;
-            if (spouse == null || spouse.IsPrisoner || spouse.CurrentSettlement == null)
-            {
-                return;
-            }
+            Hero spouse = Hero.MainHero.Spouse;
+            if (spouse == null || spouse.IsPrisoner || spouse.IsPregnant) return;
 
-            var nearestBanditParty = MobileParty.All.Where(p => p.IsBandit && p.IsActive && p.CurrentSettlement == null)
-            .OrderBy(p => p.GetPosition().DistanceSquared(spouse.CurrentSettlement.GetPosition()))
-            .FirstOrDefault();
+            var nearestBanditParty = MobileParty.All.Where(p => p.IsBandit && p.IsActive && p.IsVisible && p.IsMoving)
+                .OrderBy(p => p.GetPosition().Distance(spouse.CurrentSettlement.GetPosition()))
+                .FirstOrDefault();
 
-            while (nearestBanditParty != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement)
+            if (nearestBanditParty != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement)
             {
                 Random random = new Random();
-                if (MBRandom.RandomInt() <= GlobalSettings<SubModuleSettings>.Instance.eventChance)
+                if (random.Next(0, 11) <= GlobalSettings<SubModuleSettings>.Instance.eventChance)
                 {
-                    isKidnapped = true; 
-                    InformationManager.DisplayMessage(new InformationMessage($"{spouse.Name} has been kidnapped by bandits!"));
+                    isKidnapped = true;
+                    InformationManager.DisplayMessage(new InformationMessage($"{spouse.Name} has been kidnapped by bandits!", Colors.Red));
                 }
-
                 if (isKidnapped)
                 {
                     daysSinceLastKidnapping++;
                     nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
                     Campaign.Current.VisualTrackerManager.RegisterObject(nearestBanditParty);
                     InformationManager.DisplayMessage(new InformationMessage("The bandit party has been marked on your map.", Colors.Red));
-                    if (!nearestBanditParty.PrisonRoster.Contains(spouse.CharacterObject))
-                    {
-                        isKidnapped = false;
-                    }
+                    if (!nearestBanditParty.PrisonRoster.Contains(spouse.CharacterObject)) isKidnapped = false;
 
                     if (daysSinceLastKidnapping > 5)
                     {
-                        InformationManager.DisplayMessage(new InformationMessage($"Your spouse has been in captivity for {daysSinceLastKidnapping} days! You should rescue them soon."));
+                        InformationManager.DisplayMessage(new InformationMessage($"Your spouse has been in captivity for {daysSinceLastKidnapping} days! You should rescue them soon.", Colors.Red));
                     }
-
                 }
             }
 
