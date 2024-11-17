@@ -3,16 +3,8 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using HarmonyLib;
-using TaleWorlds.CampaignSystem.Party;
-using System.Linq;
 using TaleWorlds.Library;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
-using TaleWorlds.CampaignSystem.Settlements.Workshops;
-using System.Collections.Generic;
-using System;
-using TaleWorlds.CampaignSystem.Roster;
-using TaleWorlds.CampaignSystem.Settlements;
-
 
 
 namespace childrenGrowFaster
