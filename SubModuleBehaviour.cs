@@ -19,6 +19,7 @@ namespace childrenGrowFaster
 {
     public class SubModuleBehaviour : CampaignBehaviorBase
     {
+        private Hero spouse = Hero.MainHero.Spouse;
         private bool isKidnapped = false;
         public override void RegisterEvents()
         {
@@ -51,42 +52,27 @@ namespace childrenGrowFaster
 
         private void SpouseEvent1()
         {
-            int daysSinceLastKidnapping = 0;
-            Hero spouse = Hero.MainHero.Spouse;
-            if (spouse == null || spouse.IsPrisoner || spouse.IsPregnant) return;
-
-            var nearestBanditParty = MobileParty.All.Where(p => p.IsBandit && p.IsActive && p.IsVisible && p.IsMoving)
-                .OrderBy(p => p.GetPosition().Distance(spouse.CurrentSettlement.GetPosition()))
-                .FirstOrDefault();
-
-            if (nearestBanditParty != null && spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement)
+            if (spouse == null) return;
+            
+            var randomRelationGain = MBRandom.RandomInt(-1, 5);
+            List<Hero> lordsInSpouseSettlement = spouse.CurrentSettlement.Parties.Select(p => p.LeaderHero).ToList();
+            foreach (Hero lord in lordsInSpouseSettlement)
             {
-                Random random = new Random();
-                if (random.Next(0, 11) <= GlobalSettings<SubModuleSettings>.Instance.eventChance)
+                if (spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement && !isKidnapped)
                 {
-                    isKidnapped = true;
-                    InformationManager.DisplayMessage(new InformationMessage($"{spouse.Name} has been kidnapped by bandits!", Colors.Red));
-                }
-                if (isKidnapped)
-                {
-                    daysSinceLastKidnapping++;
-                    nearestBanditParty.AddPrisoner(spouse.CharacterObject, 1);
-                    Campaign.Current.VisualTrackerManager.RegisterObject(nearestBanditParty);
-                    InformationManager.DisplayMessage(new InformationMessage("The bandit party has been marked on your map.", Colors.Red));
-                    if (!nearestBanditParty.PrisonRoster.Contains(spouse.CharacterObject)) isKidnapped = false;
-
-                    if (daysSinceLastKidnapping > 5)
+                    if (MBRandom.RandomInt(1, 11) < GlobalSettings<SubModuleSettings>.Instance.eventChance)
                     {
-                        InformationManager.DisplayMessage(new InformationMessage($"Your spouse has been in captivity for {daysSinceLastKidnapping} days! You should rescue them soon.", Colors.Red));
+                        Hero.MainHero.SetPersonalRelation(lord, randomRelationGain);
+                        InformationManager.DisplayMessage(new InformationMessage($"{spouse.Name} has {(randomRelationGain < 0 ? "decreased" : "increased")} by {Math.Abs(randomRelationGain)}", Colors.Green));
                     }
                 }
+                else return;
             }
-
         }
 
         private void SpouseEvent2()
         {
-            Hero spouse = Hero.MainHero.Spouse;
+            
             if (spouse == null) return;
 
             if (spouse.CurrentSettlement != null &&
@@ -107,7 +93,6 @@ namespace childrenGrowFaster
             workshops.AddRange(Hero.MainHero.OwnedWorkshops);
             foreach (Workshop workshop in workshops)
             {
-                Hero spouse = Hero.MainHero.Spouse;
                 if (workshop.Settlement != Hero.MainHero.CurrentSettlement && workshop.Settlement == spouse.CurrentSettlement && workshop != null)
                 {
                     int randomProfit = MBRandom.RandomInt(100, 900);
@@ -119,8 +104,6 @@ namespace childrenGrowFaster
 
         private void SpouseEvent4()
         {
-            Hero spouse = Hero.MainHero.Spouse;
-
             foreach (Settlement s in Settlement.All)
             {
                 if (!IsValidSettlement(s, spouse)) return;
@@ -129,6 +112,10 @@ namespace childrenGrowFaster
                 if (garrisonRoster == null) return;
                 GiveXP(garrisonRoster, s, spouse);
             }
+        }
+
+        private void SpouseEvent5()
+        {
         }
 
         private bool IsValidSettlement(Settlement s, Hero spouse)

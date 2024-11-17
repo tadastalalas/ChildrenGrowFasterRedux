@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System;
 using TaleWorlds.CampaignSystem.Roster;
 using TaleWorlds.CampaignSystem.Settlements;
+using System.Runtime.Remoting.Messaging;
 
 
 
@@ -148,6 +149,12 @@ namespace childrenGrowFaster
             int randomTraitLevel = MBRandom.RandomInt(-1, 3);
             randomChild.SetTraitLevel(randomTrait, randomTraitLevel);
             InformationManager.DisplayMessage(new InformationMessage($"{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!"));
+            // if there are more than 3 traits, then we stop adding traits to the child. 
+            if (randomChild.GetHeroTraits().ToString().Length > 3)
+            {
+                return;
+            }
+
         }
 
     }
