@@ -58,7 +58,6 @@ namespace childrenGrowFaster
                     InformationManager.DisplayMessage(
                         new InformationMessage($"{spouse.Name} has {(randomRelationGain < 0 ? "decreased" : "increased")} by {Math.Abs(randomRelationGain)}", Colors.Green));
                 }
-                else continue;
             }
         }
 
@@ -120,7 +119,6 @@ namespace childrenGrowFaster
                     InformationManager.DisplayMessage(
                         new InformationMessage($"{spouse.Name} has increased relation with {notable.Name} by {MBRandom.RandomInt(1, 5)}", Colors.Green));
                 }
-                else continue;
             }
         }
 
