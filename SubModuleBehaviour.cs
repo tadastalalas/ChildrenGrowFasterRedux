@@ -1,4 +1,5 @@
 ﻿using MCM.Abstractions.Base.Global;
+using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,11 +55,9 @@ namespace childrenGrowFaster
             {
                 if (spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement && !isKidnapped)
                 {
-                    if (MBRandom.RandomInt(1, 11) < GlobalSettings<SubModuleSettings>.Instance.eventChance)
-                    {
-                        Hero.MainHero.SetPersonalRelation(lord, randomRelationGain);
-                        InformationManager.DisplayMessage(new InformationMessage($"{spouse.Name} has {(randomRelationGain < 0 ? "decreased" : "increased")} by {Math.Abs(randomRelationGain)}", Colors.Green));
-                    }
+                    Hero.MainHero.SetPersonalRelation(lord, randomRelationGain);
+                    InformationManager.DisplayMessage(
+                        new InformationMessage($"{spouse.Name} has {(randomRelationGain < 0 ? "decreased" : "increased")} by {Math.Abs(randomRelationGain)}", Colors.Green));
                 }
                 else return;
             }
@@ -91,7 +90,8 @@ namespace childrenGrowFaster
                 {
                     int randomProfit = MBRandom.RandomInt(100, 900);
                     workshop.ChangeGold(randomProfit);
-                    InformationManager.DisplayMessage(new InformationMessage($"Your spouse has boosted the profits of {workshop.Name} by {randomProfit} gold!", Colors.Green));
+                    InformationManager.DisplayMessage(
+                        new InformationMessage($"Your spouse has boosted the profits of {workshop.Name} by {randomProfit} gold!", Colors.Green));
                 }
             }
         }
@@ -110,6 +110,19 @@ namespace childrenGrowFaster
 
         private void SpouseEvent5()
         {
+            if (spouse == null) return;
+
+            var notablesInSpouseSettlement = spouse.CurrentSettlement.Notables;
+            foreach (var notable in notablesInSpouseSettlement)
+            {
+                if (spouse.CurrentSettlement != Hero.MainHero.CurrentSettlement)
+                {
+                    Hero.MainHero.SetPersonalRelation(notable, MBRandom.RandomInt(1, 5));
+                    InformationManager.DisplayMessage(
+                        new InformationMessage($"{spouse.Name} has increased relation with {notable.Name} by {MBRandom.RandomInt(1, 5)}", Colors.Green));
+                }
+                else return;
+            }
         }
 
         private bool IsValidSettlement(Settlement s, Hero spouse)
