@@ -1,5 +1,4 @@
 ﻿using MCM.Abstractions.Base.Global;
-using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +37,7 @@ namespace childrenGrowFaster
 
         private void FireRandomSpouseEvent()
         {
-            var events = new List<Action> { SpouseEvent1, SpouseEvent2, SpouseEvent3, SpouseEvent4 };
+            var events = new List<Action> { SpouseEvent1, SpouseEvent2, SpouseEvent3, SpouseEvent4, SpouseEvent5 };
             if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
             {
                 events[MBRandom.RandomInt(events.Count)]();
@@ -59,7 +58,7 @@ namespace childrenGrowFaster
                     InformationManager.DisplayMessage(
                         new InformationMessage($"{spouse.Name} has {(randomRelationGain < 0 ? "decreased" : "increased")} by {Math.Abs(randomRelationGain)}", Colors.Green));
                 }
-                else return;
+                else continue;
             }
         }
 
@@ -80,7 +79,7 @@ namespace childrenGrowFaster
             }
         }
 
-        private void SpouseEvent3()
+        private void SpouseEvent3() // only works if the settlement is owned by the player
         {
             List<Workshop> workshops = new List<Workshop>();
             workshops.AddRange(Hero.MainHero.OwnedWorkshops);
@@ -96,7 +95,7 @@ namespace childrenGrowFaster
             }
         }
 
-        private void SpouseEvent4()
+        private void SpouseEvent4() // only works if the settlement is owned by the player 
         {
             foreach (Settlement s in Settlement.All)
             {
@@ -121,7 +120,7 @@ namespace childrenGrowFaster
                     InformationManager.DisplayMessage(
                         new InformationMessage($"{spouse.Name} has increased relation with {notable.Name} by {MBRandom.RandomInt(1, 5)}", Colors.Green));
                 }
-                else return;
+                else continue;
             }
         }
 
@@ -156,3 +155,11 @@ namespace childrenGrowFaster
         }
     }
 }
+
+/*
+ * TODO: 
+ * Make it so that the events that only work if the settlement is owned by the player, to work for any settlement in the same kingdom as the player.
+ Assuming the player is a vassal of a kingdom and didnt start their own kingdom. 
+
+Fall back to the original spouse events when the player is in its own kingdom. 
+ */
