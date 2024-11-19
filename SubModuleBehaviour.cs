@@ -122,6 +122,22 @@ namespace childrenGrowFaster
             }
         }
 
+        private void SpouseEvent6()
+        {
+            if (spouse == null) return;
+
+            if (Hero.MainHero.CurrentSettlement != spouse.CurrentSettlement && !spouse.IsPregnant)
+            {
+                float duration = 3f;
+                CampaignTime boostEndTime = CampaignTime.Now + CampaignTime.Days(duration);
+                float xpMultiplier = 1f + (MBRandom.RandomFloat * 1.5f);
+                var skills = typeof(DefaultSkills).GetFields();
+                foreach (var skill in skills)
+                {
+                }              
+            }
+        }
+
         private bool IsValidSettlement(Settlement s, Hero spouse)
         {
             return s.OwnerClan == Hero.MainHero.Clan
