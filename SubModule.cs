@@ -152,7 +152,6 @@ namespace childrenGrowFaster
 }
 
 /* TODO:
- * implement a way to manipulate where the bandit party roams. 
  * create a round popup that notifies the player that their spouse has been kidnapped.. https://docs.bannerlordmodding.lt/guides/custom_round_popup/
  * do something with keeping track of days since last event. ex : if daysSinceLastSpouseEvent > 30, then do something.
 */
