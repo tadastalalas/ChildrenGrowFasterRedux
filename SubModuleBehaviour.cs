@@ -30,17 +30,12 @@ namespace childrenGrowFaster
             {
                 if (Hero.MainHero.Spouse != null && !Hero.MainHero.Spouse.IsPregnant)
                 {
-                    FireRandomSpouseEvent();
+                    var events = new List<Action> { SpouseEvent1, SpouseEvent2, SpouseEvent3, SpouseEvent4, SpouseEvent5 };
+                    if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
+                    {
+                        events[MBRandom.RandomInt(events.Count)]();
+                    }
                 }
-            }
-        }
-
-        private void FireRandomSpouseEvent()
-        {
-            var events = new List<Action> { SpouseEvent1, SpouseEvent2, SpouseEvent3, SpouseEvent4, SpouseEvent5 };
-            if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.eventChance)
-            {
-                events[MBRandom.RandomInt(events.Count)]();
             }
         }
 
@@ -119,22 +114,6 @@ namespace childrenGrowFaster
                     InformationManager.DisplayMessage(
                         new InformationMessage($"{spouse.Name} has increased relation with {notable.Name} by {MBRandom.RandomInt(1, 5)}", Colors.Green));
                 }
-            }
-        }
-
-        private void SpouseEvent6()
-        {
-            if (spouse == null) return;
-
-            if (Hero.MainHero.CurrentSettlement != spouse.CurrentSettlement && !spouse.IsPregnant)
-            {
-                float duration = 3f;
-                CampaignTime boostEndTime = CampaignTime.Now + CampaignTime.Days(duration);
-                float xpMultiplier = 1f + (MBRandom.RandomFloat * 1.5f);
-                var skills = typeof(DefaultSkills).GetFields();
-                foreach (var skill in skills)
-                {
-                }              
             }
         }
 
