@@ -6,7 +6,7 @@ using TaleWorlds.MountAndBlade;
 using MCM.Abstractions.Base.Global;
 using TaleWorlds.Library;
 
-namespace childrenGrowFaster
+namespace ChildrenGrowFaster
 {
     [HarmonyPatch(typeof(DefaultPregnancyModel), nameof(DefaultPregnancyModel.PregnancyDurationInDays), MethodType.Getter)]
     public static class AdjustPregnancyDuration

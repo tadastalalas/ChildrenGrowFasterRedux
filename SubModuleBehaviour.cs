@@ -9,7 +9,7 @@ using TaleWorlds.CampaignSystem.Settlements.Workshops;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 
-namespace childrenGrowFaster
+namespace ChildrenGrowFaster
 {
     public class SubModuleBehaviour : CampaignBehaviorBase
     {

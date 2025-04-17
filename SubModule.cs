@@ -5,20 +5,24 @@ using TaleWorlds.MountAndBlade;
 using HarmonyLib;
 using TaleWorlds.Library;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
+using System.Collections.Generic;
+using System.Linq;
 
 
-namespace childrenGrowFaster
+namespace ChildrenGrowFaster
 {
     public class SubModule : MBSubModuleBase
     {
-        private Harmony _harmony;
+        private Harmony? _harmony;
         private int daysSinceLastSpouseEvent = 0;
         private int daysSinceLastTraitEvent = 0;
+        private readonly SubModuleSettings settings = AttributeGlobalSettings<SubModuleSettings>.Instance ?? new SubModuleSettings();
+
         protected override void OnSubModuleLoad()
         {
-            _harmony = new Harmony("childrenGrowFaster");
+            _harmony = new Harmony("ChildrenGrowFaster");
             _harmony.PatchAll();
-            InformationManager.DisplayMessage(new InformationMessage("childrenGrowFaster loaded succesfully.", Colors.Green));
+            InformationManager.DisplayMessage(new InformationMessage("Children Grow Faster loaded succesfully.", Colors.Green));
         }
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
@@ -33,85 +37,85 @@ namespace childrenGrowFaster
 
         private void OnDailyTick()
         {
-            if (GlobalSettings<SubModuleSettings>.Instance.affectOnlyPlayerChildren)
-            {
-                applyGrowthRateToPlayerChildren();
-            }
+            if (settings.affectOnlyPlayerChildren)
+                ApplyGrowthRateToPlayerChildren();
             else
-            {
-                applyGrowthRateToAllChildren();
-            }
-            if (GlobalSettings<SubModuleSettings>.Instance.instantGrowth)
-            {
-                float growthRate = GlobalSettings<SubModuleSettings>.Instance.newGrowthRate;
-                foreach (Hero h in Hero.AllAliveHeroes)
-                {
-                    if (h.IsChild && h.Age < 18 && (h.Father == Hero.MainHero || h.Mother == Hero.MainHero))
-                    {
-                        h.SetBirthDay(h.BirthDay - CampaignTime.Days(growthRate * 100));
-                    }
-                }
-            }
-            if (GlobalSettings<SubModuleSettings>.Instance.affectEveryone)
-            {
-                applyGrowthRateToEveryone();
-            }
+                ApplyGrowthRateToAllChildren();
 
-            if (GlobalSettings<SubModuleSettings>.Instance.randomTraitsEnabled)
+            if (settings.affectEveryone)
+                ApplyGrowthRateToEveryoneElse();
+
+            if (settings.randomTraitsEnabled)
             {
-                if (MBRandom.RandomFloat < GlobalSettings<SubModuleSettings>.Instance.traitChance)
+                if (MBRandom.RandomFloat < settings.traitChance)
                 {
                     daysSinceLastTraitEvent++;
-                    giveRandomTraitToChild();
+                    GiveRandomTraitToChild();
                 }
                 daysSinceLastTraitEvent = 0;
             }
-
         }
 
-        private void applyGrowthRateToPlayerChildren()
+        private void ApplyGrowthRateToPlayerChildren()
         {
-            float growthRate = GlobalSettings<SubModuleSettings>.Instance.newGrowthRate;
-            foreach (Hero h in Hero.AllAliveHeroes)
+            float additionalDaysPerDay = settings.additionalDaysPerDay;
+            foreach (Hero hero in Hero.AllAliveHeroes)
             {
-                if (h.IsChild && h.Age < 18 && (h.Father == Hero.MainHero || h.Mother == Hero.MainHero))
+                if (hero.IsChild && hero.Age < settings.whenHeroComesOfAge && (hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero))
                 {
-                    h.SetBirthDay(h.BirthDay - CampaignTime.Days(growthRate + 1f)); // +1f triples growth rate essentially
+                    hero.SetBirthDay(hero.BirthDay - CampaignTime.Days(additionalDaysPerDay));
+                }
+            }
+
+            if (settings.DoChildGrowToAdultInstantly)
+                ApplyInstantGrowthToChildren(Hero.AllAliveHeroes.Where(hero => hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero));
+        }
+
+        private void ApplyGrowthRateToAllChildren()
+        {
+            float additionalDaysPerDay = settings.additionalDaysPerDay;
+            foreach (Hero hero in Hero.AllAliveHeroes)
+            {
+                if (hero.IsChild && hero.Age < settings.whenHeroComesOfAge)
+                {
+                    hero.SetBirthDay(hero.BirthDay - CampaignTime.Days(additionalDaysPerDay));
+                }
+            }
+
+            if (settings.DoChildGrowToAdultInstantly)
+                ApplyInstantGrowthToChildren(Hero.AllAliveHeroes);
+        }
+
+        private void ApplyInstantGrowthToChildren(IEnumerable<Hero> heroes)
+        {
+            foreach (Hero hero in heroes)
+            {
+                if (hero.IsChild && hero.Age < settings.whenHeroComesOfAge)
+                {
+                    float yearsLeftToAdulthood = settings.whenHeroComesOfAge - hero.Age;
+                    float daysLeftToAdulthood = yearsLeftToAdulthood * 84;
+
+                    CampaignTime newBirthDay = hero.BirthDay - CampaignTime.Days(daysLeftToAdulthood);
+                    hero.SetBirthDay(newBirthDay);
                 }
             }
         }
 
-        private void applyGrowthRateToAllChildren()
+        private void ApplyGrowthRateToEveryoneElse()
         {
-            float growthRate = GlobalSettings<SubModuleSettings>.Instance.newGrowthRate;
-            foreach (Hero h in Hero.AllAliveHeroes)
+            float additionalDaysPerDay = settings.additionalDaysPerDay;
+
+            foreach (Hero hero in Hero.AllAliveHeroes)
             {
-                if (h.IsChild && h.Age < 18)
-                {
-                    h.SetBirthDay(h.BirthDay - CampaignTime.Days(growthRate + 1f));
-                }
+                if (hero.Age >= settings.whenHeroComesOfAge)
+                    hero?.SetBirthDay(hero.BirthDay - CampaignTime.Days(additionalDaysPerDay));
             }
         }
 
-        private void applyGrowthRateToEveryone()
+        private void GiveRandomTraitToChild()
         {
-            float growthRate = GlobalSettings<SubModuleSettings>.Instance.newGrowthRate;
-            foreach (Hero h in Hero.AllAliveHeroes)
-            {
-                if (h != null)
-                {
-                    h.SetBirthDay(h.BirthDay - CampaignTime.Days(growthRate + 1f));
-                }
-            }
-        }
-
-        private void giveRandomTraitToChild()
-        {
-            // make sure main hero has children 
             if (Hero.MainHero.Children == null || Hero.MainHero.Children.Count == 0)
-            {
                 return;
-            }
 
             Hero randomChild = Hero.MainHero.Children[MBRandom.RandomInt(Hero.MainHero.Children.Count)];
 
@@ -123,7 +127,6 @@ namespace childrenGrowFaster
                 DefaultTraits.Valor,
                 DefaultTraits.Calculating,
                 
-                // skill traits 
                 DefaultTraits.ScoutSkills,
                 DefaultTraits.RogueSkills,
                 DefaultTraits.SergeantCommandSkills,
@@ -132,26 +135,15 @@ namespace childrenGrowFaster
                 DefaultTraits.HorseArcherFightingSkills,
                 DefaultTraits.ArcherFIghtingSkills,
                 DefaultTraits.CrossbowmanStyle
-
-                // https://docs.bannerlordmodding.lt/modding/heroes/
             };
 
             TraitObject randomTrait = availableTraits[MBRandom.RandomInt(availableTraits.Length)];
             int randomTraitLevel = MBRandom.RandomInt(-1, 3);
             randomChild.SetTraitLevel(randomTrait, randomTraitLevel);
             InformationManager.DisplayMessage(new InformationMessage($"{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!"));
-            // if there are more than 3 traits, then we stop adding traits to the child. 
+            
             if (randomChild.GetHeroTraits().ToString().Length > 3)
-            {
                 return;
-            }
-
         }
-
     }
 }
-
-/* TODO:
- * create a round popup that notifies the player that their spouse has been kidnapped.. https://docs.bannerlordmodding.lt/guides/custom_round_popup/
- * do something with keeping track of days since last event. ex : if daysSinceLastSpouseEvent > 30, then do something.
-*/

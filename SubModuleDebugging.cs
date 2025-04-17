@@ -9,7 +9,7 @@ using TaleWorlds.CampaignSystem.Settlements.Workshops;
 using TaleWorlds.CampaignSystem.Settlements;
 using System.Linq;
 
-namespace childrenGrowFaster
+namespace ChildrenGrowFaster
 {
     public class SubModuleDebugging
     {
