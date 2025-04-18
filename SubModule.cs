@@ -7,6 +7,7 @@ using TaleWorlds.Library;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using System.Collections.Generic;
 using System.Linq;
+using TaleWorlds.Localization;
 
 
 namespace ChildrenGrowFasterRedux
@@ -24,7 +25,7 @@ namespace ChildrenGrowFasterRedux
         {
             _harmony = new Harmony("ChildrenGrowFasterRedux");
             _harmony.PatchAll();
-            InformationManager.DisplayMessage(new InformationMessage("Children Grow Faster Redux loaded succesfully.", Colors.Green));
+            InformationManager.DisplayMessage(new InformationMessage(new TextObject("{=CGRR_ufs59VVy}Children Grow Faster Redux loaded succesfully.").ToString(), Colors.Green));
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
@@ -159,7 +160,7 @@ namespace ChildrenGrowFasterRedux
             TraitObject randomTrait = availableTraits[MBRandom.RandomInt(availableTraits.Length)];
             int randomTraitLevel = MBRandom.RandomInt(-1, 3);
             randomChild.SetTraitLevel(randomTrait, randomTraitLevel);
-            InformationManager.DisplayMessage(new InformationMessage($"{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!"));
+            InformationManager.DisplayMessage(new InformationMessage(new TextObject("{=CGRR_S7CDl3Ac}{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!").ToString()));
         }
     }
 }
