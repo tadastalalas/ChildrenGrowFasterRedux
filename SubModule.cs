@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace ChildrenGrowFaster
+namespace ChildrenGrowFasterRedux
 {
     public class SubModule : MBSubModuleBase
     {
@@ -22,9 +22,9 @@ namespace ChildrenGrowFaster
 
         protected override void OnSubModuleLoad()
         {
-            _harmony = new Harmony("ChildrenGrowFaster");
+            _harmony = new Harmony("ChildrenGrowFasterRedux");
             _harmony.PatchAll();
-            InformationManager.DisplayMessage(new InformationMessage("Children Grow Faster loaded succesfully.", Colors.Green));
+            InformationManager.DisplayMessage(new InformationMessage("Children Grow Faster Redux loaded succesfully.", Colors.Green));
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)

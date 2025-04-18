@@ -2,13 +2,13 @@
 using MCM.Abstractions.Attributes.v2;
 using MCM.Abstractions.Base.Global;
 
-namespace ChildrenGrowFaster
+namespace ChildrenGrowFasterRedux
 {
     public class SubModuleSettings : AttributeGlobalSettings<SubModuleSettings>
     {
-        public override string Id => "ChildrenGrowFaster";
-        public override string DisplayName => "Children Grow Faster";
-        public override string FolderName => "ChildrenGrowFaster";
+        public override string Id => "ChildrenGrowFasterRedux";
+        public override string DisplayName => "Children Grow Faster Redux";
+        public override string FolderName => "ChildrenGrowFasterRedux";
         public override string FormatType => "json2";
 
         [SettingPropertyFloatingInteger("Growth Rate", 0f, 100f, "0.0", Order = 0, RequireRestart = false, HintText = "Adjusts how many days to add to normal growth day. If you set it to 1 it means children will get older twice as fast. [Default: 1]")]
