@@ -6,17 +6,22 @@ namespace ChildrenGrowFaster
 {
     public class SubModuleSettings : AttributeGlobalSettings<SubModuleSettings>
     {
+        public override string Id => "ChildrenGrowFaster";
+        public override string DisplayName => "Children Grow Faster";
+        public override string FolderName => "ChildrenGrowFaster";
+        public override string FormatType => "json2";
+
         [SettingPropertyFloatingInteger("Growth Rate", 0f, 100f, "0.0", Order = 0, RequireRestart = false, HintText = "Adjusts how many days to add to normal growth day. If you set it to 1 it means children will get older twice as fast. [Default: 1]")]
         [SettingPropertyGroup("Children Growth Rate Settings")]
-        public float additionalDaysPerDay { get; set; } = 1f;
+        public float AdditionalDaysPerDay { get; set; } = 1f;
 
         [SettingPropertyInteger("When Hero Comes of Age?", 10, 18, Order = 1, RequireRestart = false, HintText = "Let this mod know when children will come of age. Why? Because if you use 'Bannerlord Expanded - Children Expanded' mod, there is a setting 'Hero Comes of Age', make this setting same as that one. [Default: 18]")]
         [SettingPropertyGroup("Children Growth Rate Settings")]
-        public int whenHeroComesOfAge { get; set; } = 18;
+        public int WhenHeroComesOfAge { get; set; } = 18;
 
-        [SettingPropertyBool("Affect player children only", Order = 2, RequireRestart = false, HintText = "Mod only affects growth rate of player children. [Default: false]")]
+        [SettingPropertyBool("Affect Player Children Only", Order = 2, RequireRestart = false, HintText = "Mod only affects growth rate of player children. [Default: false]")]
         [SettingPropertyGroup("Children Growth Rate Settings")]
-        public bool affectOnlyPlayerChildren { get; set; } = false;
+        public bool AffectOnlyPlayerChildren { get; set; } = false;
 
         [SettingPropertyBool("Instant Children Growth", Order = 3, RequireRestart = false, HintText = "Children will grow to adulthood instantly. [Default: false]")]
         [SettingPropertyGroup("Children Growth Rate Settings")]
@@ -24,35 +29,30 @@ namespace ChildrenGrowFaster
 
         [SettingPropertyBool("Affect Everyone", Order = 4, RequireRestart = false, HintText = "Growth rate affects all children & adults. [Default: false]")]
         [SettingPropertyGroup("Children Growth Rate Settings")]
-        public bool affectEveryone { get; set; } = false;
+        public bool AffectEveryone { get; set; } = false;
 
-        [SettingPropertyBool("Enable Spouse Events", Order = 1, RequireRestart = false, HintText = "Enables spouse events feature. [Default: false]")]
-        [SettingPropertyGroup("Spouse Events")]
-        public bool spouseEventsEnabled { get; set; } = false;
 
-        [SettingPropertyInteger("Event Chance", 1, 10, Order = 2, RequireRestart = false, HintText = "The chance of the spouse events happening. [Default: 1]")]
-        [SettingPropertyGroup("Spouse Events")]
-        public int eventChance { get; set; } = 1;
-
-        [SettingPropertyBool("Random Traits for Children", Order = 1, HintText = "Enables random traits for children. [Default: false]")]
+        [SettingPropertyBool("Random Traits For Player Children", Order = 0, HintText = "Enables random traits for player children. [Default: false]")]
         [SettingPropertyGroup("Random Traits")]
-        public bool randomTraitsEnabled { get; set; } = false;
+        public bool RandomTraitsForPlayerChildren { get; set; } = false;
 
-        [SettingPropertyFloatingInteger("Trait Chance", 0.05f, 1f, "0.0", Order = 2, RequireRestart = false, HintText = "Chance of children gaining a random trait. [Default: 0.05]")]
+        [SettingPropertyInteger("Trait Chance", 0, 100, Order = 1, RequireRestart = false, HintText = "Chance of children gaining a random trait (in percent). [Default: 5]")]
         [SettingPropertyGroup("Random Traits")]
-        public float traitChance { get; set; } = 0.05f;
+        public int RandomTraitChance { get; set; } = 5;
 
-        [SettingPropertyBool("Enable adjustable pregnancy duration", Order = 1, RequireRestart = false, HintText = "Must be enabled for the slider to work. This feature will enable Harmony Postfix patch so please check with your other mods that adjust pregnancy duration before enabling. [Default: false]")]
+        [SettingPropertyInteger("Days Between Next Trait Can Be Added", 0, 100, Order = 2, RequireRestart = false, HintText = "How many days must pass since the last trait was added before attempting to add the next trait? Keep in mind that for the next trait to be added, the 'Trait Chance' value must be met. [Default: 10]")]
+        [SettingPropertyGroup("Random Traits")]
+        public int DaysBetweenNextTraitCanBeAdded { get; set; } = 10;
+
+
+        [SettingPropertyBool("Enable Adjustable Pregnancy Duration", Order = 0, RequireRestart = false, HintText = "Must be enabled for the slider to work. This feature will enable Harmony Postfix patch so please check with your other mods that adjusts pregnancy duration before enabling it. [Default: false]")]
         [SettingPropertyGroup("Pregnancy Duration (Harmony Patch)")]
         public bool enablePregnancyDuration { get; set; } = false;
 
-        [SettingPropertyInteger("Adjust Pregnancy Duration", minValue: 1, maxValue: 100, Order = 2, RequireRestart = false, HintText = "Adjust the number of days it takes for children to be born. [Default: 36]")]
+        [SettingPropertyInteger("Adjust Pregnancy Duration", minValue: 1, maxValue: 100, Order = 1, RequireRestart = false, HintText = "Adjust the number of days it takes for children to be born. [Default: 36]")]
         [SettingPropertyGroup("Pregnancy Duration (Harmony Patch)")]
         public int AdjsutPregnancyDuration { get; set; } = 36;
 
-        public override string Id => "childrenGrowFaster";
-        public override string DisplayName => "Children Grow Faster";
-        public override string FolderName => "childrenGrowFaster";
-        public override string FormatType => "xml";
+        
     }
 }

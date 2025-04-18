@@ -14,9 +14,11 @@ namespace ChildrenGrowFaster
     public class SubModule : MBSubModuleBase
     {
         private Harmony? _harmony;
-        private int daysSinceLastSpouseEvent = 0;
-        private int daysSinceLastTraitEvent = 0;
         private readonly SubModuleSettings settings = AttributeGlobalSettings<SubModuleSettings>.Instance ?? new SubModuleSettings();
+
+        private int daysSinceLastPlayerChildTraitAdded = 0;
+
+        private bool playerChildTraitAdded = false;
 
         protected override void OnSubModuleLoad()
         {
@@ -24,75 +26,90 @@ namespace ChildrenGrowFaster
             _harmony.PatchAll();
             InformationManager.DisplayMessage(new InformationMessage("Children Grow Faster loaded succesfully.", Colors.Green));
         }
+
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
+
             if (game.GameType is Campaign)
             {
-                CampaignEvents.DailyTickEvent.AddNonSerializedListener(this, OnDailyTick);
-                CampaignGameStarter campaignStarter = (CampaignGameStarter)gameStarterObject;
-                campaignStarter.AddBehavior(new SubModuleBehaviour());
+                CampaignEvents.DailyTickEvent.AddNonSerializedListener(this, OnDailyTickEvent);
             }
         }
 
-        private void OnDailyTick()
+        private void OnDailyTickEvent()
         {
-            if (settings.affectOnlyPlayerChildren)
+            if (settings.AffectOnlyPlayerChildren)
                 ApplyGrowthRateToPlayerChildren();
             else
                 ApplyGrowthRateToAllChildren();
 
-            if (settings.affectEveryone)
+            if (settings.AffectEveryone)
                 ApplyGrowthRateToEveryoneElse();
 
-            if (settings.randomTraitsEnabled)
+            if (settings.RandomTraitsForPlayerChildren)
             {
-                if (MBRandom.RandomFloat < settings.traitChance)
+                if (playerChildTraitAdded && daysSinceLastPlayerChildTraitAdded < settings.DaysBetweenNextTraitCanBeAdded)
                 {
-                    daysSinceLastTraitEvent++;
-                    GiveRandomTraitToChild();
+                    daysSinceLastPlayerChildTraitAdded++;
                 }
-                daysSinceLastTraitEvent = 0;
+                else
+                {
+                    daysSinceLastPlayerChildTraitAdded = 0;
+                    playerChildTraitAdded = false;
+                }
+
+                if (!playerChildTraitAdded && MBRandom.RandomInt(0, 100) < settings.RandomTraitChance)
+                {
+                    GiveRandomTraitToChild();
+                    playerChildTraitAdded = true;
+                }
             }
         }
 
         private void ApplyGrowthRateToPlayerChildren()
         {
-            float additionalDaysPerDay = settings.additionalDaysPerDay;
+            if (settings.DoChildGrowToAdultInstantly)
+            {
+                ApplyInstantGrowthToChildren(Hero.AllAliveHeroes.Where(hero => hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero));
+                return;
+            }
+
+            float additionalDaysPerDay = settings.AdditionalDaysPerDay;
             foreach (Hero hero in Hero.AllAliveHeroes)
             {
-                if (hero.IsChild && hero.Age < settings.whenHeroComesOfAge && (hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero))
+                if (hero.IsChild && hero.Age < settings.WhenHeroComesOfAge && (hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero))
                 {
                     hero.SetBirthDay(hero.BirthDay - CampaignTime.Days(additionalDaysPerDay));
                 }
             }
-
-            if (settings.DoChildGrowToAdultInstantly)
-                ApplyInstantGrowthToChildren(Hero.AllAliveHeroes.Where(hero => hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero));
         }
 
         private void ApplyGrowthRateToAllChildren()
         {
-            float additionalDaysPerDay = settings.additionalDaysPerDay;
+            if (settings.DoChildGrowToAdultInstantly)
+            {
+                ApplyInstantGrowthToChildren(Hero.AllAliveHeroes);
+                return;
+            }
+
+            float additionalDaysPerDay = settings.AdditionalDaysPerDay;
             foreach (Hero hero in Hero.AllAliveHeroes)
             {
-                if (hero.IsChild && hero.Age < settings.whenHeroComesOfAge)
+                if (hero.IsChild && hero.Age < settings.WhenHeroComesOfAge)
                 {
                     hero.SetBirthDay(hero.BirthDay - CampaignTime.Days(additionalDaysPerDay));
                 }
             }
-
-            if (settings.DoChildGrowToAdultInstantly)
-                ApplyInstantGrowthToChildren(Hero.AllAliveHeroes);
         }
 
         private void ApplyInstantGrowthToChildren(IEnumerable<Hero> heroes)
         {
             foreach (Hero hero in heroes)
             {
-                if (hero.IsChild && hero.Age < settings.whenHeroComesOfAge)
+                if (hero.IsChild && hero.Age < settings.WhenHeroComesOfAge)
                 {
-                    float yearsLeftToAdulthood = settings.whenHeroComesOfAge - hero.Age;
+                    float yearsLeftToAdulthood = settings.WhenHeroComesOfAge - hero.Age;
                     float daysLeftToAdulthood = yearsLeftToAdulthood * 84;
 
                     CampaignTime newBirthDay = hero.BirthDay - CampaignTime.Days(daysLeftToAdulthood);
@@ -103,11 +120,11 @@ namespace ChildrenGrowFaster
 
         private void ApplyGrowthRateToEveryoneElse()
         {
-            float additionalDaysPerDay = settings.additionalDaysPerDay;
+            float additionalDaysPerDay = settings.AdditionalDaysPerDay;
 
             foreach (Hero hero in Hero.AllAliveHeroes)
             {
-                if (hero.Age >= settings.whenHeroComesOfAge)
+                if (hero.Age >= settings.WhenHeroComesOfAge)
                     hero?.SetBirthDay(hero.BirthDay - CampaignTime.Days(additionalDaysPerDay));
             }
         }
@@ -119,6 +136,9 @@ namespace ChildrenGrowFaster
 
             Hero randomChild = Hero.MainHero.Children[MBRandom.RandomInt(Hero.MainHero.Children.Count)];
 
+            if (randomChild.GetHeroTraits().ToString().Length > 3)
+                return;
+
             TraitObject[] availableTraits = new TraitObject[]
             {
                 DefaultTraits.Mercy,
@@ -126,7 +146,6 @@ namespace ChildrenGrowFaster
                 DefaultTraits.Honor,
                 DefaultTraits.Valor,
                 DefaultTraits.Calculating,
-                
                 DefaultTraits.ScoutSkills,
                 DefaultTraits.RogueSkills,
                 DefaultTraits.SergeantCommandSkills,
@@ -141,9 +160,6 @@ namespace ChildrenGrowFaster
             int randomTraitLevel = MBRandom.RandomInt(-1, 3);
             randomChild.SetTraitLevel(randomTrait, randomTraitLevel);
             InformationManager.DisplayMessage(new InformationMessage($"{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!"));
-            
-            if (randomChild.GetHeroTraits().ToString().Length > 3)
-                return;
         }
     }
 }
