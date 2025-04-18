@@ -41,7 +41,7 @@ namespace ChildrenGrowFasterRedux
         [SettingPropertyGroup("{=CGFR_IXejEQz9}Random Traits", GroupOrder = 1)]
         public int RandomTraitChance { get; set; } = 5;
 
-        [SettingPropertyInteger("{=CGFR_RoM13YnQ}Days Between Next Trait Can Be Added", 0, 100, Order = 2, RequireRestart = false, HintText = "{=CGFR_nOUVxHZI}How many days must pass since the last trait was added before attempting to add the next trait? Keep in mind that for the next trait to be added, the 'Trait Chance' value must be met. [Default: 10]")]
+        [SettingPropertyInteger("{=CGFR_RoM13YnQ}Days Between Next Trait Can Be Added", 1, 100, Order = 2, RequireRestart = false, HintText = "{=CGFR_nOUVxHZI}How many days must pass since the last trait was added before attempting to add the next trait? Keep in mind that for the next trait to be added, the 'Trait Chance' value must be met. [Default: 10]")]
         [SettingPropertyGroup("{=CGFR_IXejEQz9}Random Traits", GroupOrder = 1)]
         public int DaysBetweenNextTraitCanBeAdded { get; set; } = 10;
 
