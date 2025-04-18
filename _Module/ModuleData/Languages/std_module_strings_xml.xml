@@ -30,8 +30,8 @@
 		<string id="CGFR_WcwRhJm0" text="Must be enabled for the below slider to work. This feature will enable Harmony Postfix patch so please check with your other mods that adjusts pregnancy duration before enabling it. Maybe some other mod already does the same thing. [Default: false]" />
 		<string id="CGFR_yvgrrQcd" text="Adjust Pregnancy Duration" />
 		<string id="CGFR_DlU01AjN" text="Adjust the number of days it takes for children to be born. [Default: 36]" />
-		<string id="CGFR_DBnFt8A9" text="" />
-		<string id="CGFR_kJimhLwp" text="" />
+		<string id="CGFR_DBnFt8A9" text="Child Trait Count Check" />
+		<string id="CGFR_kJimhLwp" text="How many traits does a child need to have for this mod to stop checking if a new trait can be added? [Default: 3]" />
 		<string id="CGFR_xJ1yLMuy" text="" />
 		<string id="CGFR_IOUT6bW1" text="" />
 	</strings>

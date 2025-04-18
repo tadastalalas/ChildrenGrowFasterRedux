@@ -33,7 +33,7 @@ namespace ChildrenGrowFasterRedux
         public bool AffectEveryone { get; set; } = false;
 
 
-        [SettingPropertyBool("{=CGFR_LAO16M20}Random Traits For Player Children", Order = 0, HintText = "{=CGFR_7aDvIEFA}Enables random traits for player children. [Default: false]")]
+        [SettingPropertyBool("{=CGFR_LAO16M20}Random Traits For Player Children", Order = 0, RequireRestart = false, HintText = "{=CGFR_7aDvIEFA}Enables random traits for player children. [Default: false]")]
         [SettingPropertyGroup("{=CGFR_IXejEQz9}Random Traits", GroupOrder = 1)]
         public bool RandomTraitsForPlayerChildren { get; set; } = false;
 
@@ -44,6 +44,10 @@ namespace ChildrenGrowFasterRedux
         [SettingPropertyInteger("{=CGFR_RoM13YnQ}Days Between Next Trait Can Be Added", 0, 100, Order = 2, RequireRestart = false, HintText = "{=CGFR_nOUVxHZI}How many days must pass since the last trait was added before attempting to add the next trait? Keep in mind that for the next trait to be added, the 'Trait Chance' value must be met. [Default: 10]")]
         [SettingPropertyGroup("{=CGFR_IXejEQz9}Random Traits", GroupOrder = 1)]
         public int DaysBetweenNextTraitCanBeAdded { get; set; } = 10;
+
+        [SettingPropertyInteger("{=CGFR_DBnFt8A9}Child Trait Count Check", 1, 10, Order = 3, RequireRestart = false, HintText = "{=CGFR_kJimhLwp}How many traits does a child need to have for this mod to stop checking if a new trait can be added? [Default: 3]")]
+        [SettingPropertyGroup("{=CGFR_IXejEQz9}Random Traits", GroupOrder = 1)]
+        public int ChildTraitCountCheck { get; set; } = 3;
 
 
         [SettingPropertyBool("{=CGFR_daNt7nlf}Enable Adjustable Pregnancy Duration", Order = 0, RequireRestart = false, HintText = "{=CGFR_WcwRhJm0}Must be enabled for the below slider to work. This feature will enable Harmony Postfix patch so please check with your other mods that adjusts pregnancy duration before enabling it. Maybe some other mod already does the same thing. [Default: false]")]

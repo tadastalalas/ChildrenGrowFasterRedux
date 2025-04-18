@@ -137,7 +137,7 @@ namespace ChildrenGrowFasterRedux
 
             Hero randomChild = Hero.MainHero.Children[MBRandom.RandomInt(Hero.MainHero.Children.Count)];
 
-            if (randomChild.GetHeroTraits().ToString().Length > 3)
+            if (randomChild.GetHeroTraits().ToString().Length > settings.ChildTraitCountCheck)
                 return;
 
             TraitObject[] availableTraits = new TraitObject[]
