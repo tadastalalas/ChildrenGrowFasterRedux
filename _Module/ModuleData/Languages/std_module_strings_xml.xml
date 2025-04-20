@@ -8,8 +8,8 @@
 		<string id="CGFR_S7CDl3Ac" text="{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!" />
 		<string id="CGFR_YYayWvdK" text="Children Grow Faster Redux" />
 		<string id="CGFR_5GjemDpY" text="Children Growth Rate Settings" />
-		<string id="CGFR_xpz8K0H5" text="Growth Boost By Days" />
-		<string id="CGFR_1ZWhgRlk" text="Adjusts how many days to add to normal growth day. If you set it to 1 it means children will get older twice as fast. Normal day + 1 day = 2 days older in one day. [Default: 1]" />
+		<string id="CGFR_xpz8K0H5" text="Growth Rate" />
+		<string id="CGFR_1ZWhgRlk" text="Children growth rate. 1 = normal rate; 2 = twice as fast; 3 = three times as fast growth rate and so on. [Default: 2]" />
 		<string id="CGFR_86Zt3waL" text="When Hero Comes of Age?" />
 		<string id="CGFR_Aog3zurZ" text="Let this mod know when children will come of age. Why? Because if you use 'Bannerlord Expanded - Children Expanded' mod, there is a setting 'Hero Comes of Age', make this setting same as that one. [Default: 18]" />
 		<string id="CGFR_88NRzszQ" text="Affect Player Children Only" />

@@ -8,8 +8,8 @@
 		<string id="CGFR_S7CDl3Ac" text="{randomChild.Name}이(가) {randomTrait.Name} 특성을 레벨 {randomTraitLevel}로 획득했습니다!" />
 		<string id="CGFR_YYayWvdK" text="아이들이 더 빨리 자라는 Redux" />
 		<string id="CGFR_5GjemDpY" text="아이들 성장 속도 설정" />
-		<string id="CGFR_xpz8K0H5" text="일별 성장 부스트" />
-		<string id="CGFR_1ZWhgRlk" text="일반 성장일에 추가할 일수를 조정합니다. 1로 설정하면 아이들이 두 배 더 빨리 나이를 먹습니다. 일반 일수 + 1일 = 하루에 2일 나이 먹음. [기본값: 1]" />
+		<string id="CGFR_xpz8K0H5" text="성장률" />
+		<string id="CGFR_1ZWhgRlk" text="어린이의 성장 속도. 1 = 정상 속도, 2 = 두 배 빠른 속도, 3 = 세 배 빠른 성장 속도 등. [기본값: 2]" />
 		<string id="CGFR_86Zt3waL" text="영웅이 성인이 되는 나이는?" />
 		<string id="CGFR_Aog3zurZ" text="이 모드에 아이들이 성인이 되는 나이를 알려주세요. 왜냐하면 'Bannerlord Expanded - Children Expanded' 모드를 사용하는 경우 '영웅이 성인이 되는 나이'라는 설정이 있습니다. 이 설정을 동일하게 설정하세요. [기본값: 18]" />
 		<string id="CGFR_88NRzszQ" text="플레이어의 아이들만 영향을 받음" />

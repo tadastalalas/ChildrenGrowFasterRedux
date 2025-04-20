@@ -12,9 +12,9 @@ namespace ChildrenGrowFasterRedux
         public override string FolderName => "ChildrenGrowFasterRedux";
         public override string FormatType => "json2";
 
-        [SettingPropertyFloatingInteger("{=CGFR_xpz8K0H5}Growth Boost By Days", 0f, 100f, "0.0", Order = 0, RequireRestart = false, HintText = "{=CGFR_1ZWhgRlk}Adjusts how many days to add to normal growth day. If you set it to 1 it means children will get older twice as fast. Normal day + 1 day = 2 days older in one day. [Default: 1]")]
+        [SettingPropertyInteger("{=CGFR_xpz8K0H5}Growth Rate", 1, 100, Order = 0, RequireRestart = false, HintText = "{=CGFR_1ZWhgRlk}Children growth rate. 1 = normal rate; 2 = twice as fast; 3 = three times as fast growth rate and so on. [Default: 2]")]
         [SettingPropertyGroup("{=CGFR_5GjemDpY}Children Growth Rate Settings", GroupOrder = 0)]
-        public float AdditionalDaysPerDay { get; set; } = 1f;
+        public int GrowthRate { get; set; } = 2;
 
         [SettingPropertyInteger("{=CGFR_86Zt3waL}When Hero Comes of Age?", 10, 18, Order = 1, RequireRestart = false, HintText = "{=CGFR_Aog3zurZ}Let this mod know when children will come of age. Why? Because if you use 'Bannerlord Expanded - Children Expanded' mod, there is a setting 'Hero Comes of Age', make this setting same as that one. [Default: 18]")]
         [SettingPropertyGroup("{=CGFR_5GjemDpY}Children Growth Rate Settings", GroupOrder = 0)]
@@ -57,5 +57,10 @@ namespace ChildrenGrowFasterRedux
         [SettingPropertyInteger("{=CGFR_yvgrrQcd}Adjust Pregnancy Duration", minValue: 1, maxValue: 100, Order = 1, RequireRestart = false, HintText = "{=CGFR_DlU01AjN}Adjust the number of days it takes for children to be born. [Default: 36]")]
         [SettingPropertyGroup("{=CGFR_vF2aVt8N}Pregnancy Duration (Harmony Patch)", GroupOrder = 2)]
         public int AdjsutPregnancyDuration { get; set; } = 36;
+
+
+        [SettingPropertyBool("Logging for debugging", Order = 0, RequireRestart = false, HintText = "Logging for debugging. [Default: disabled]")]
+        [SettingPropertyGroup("Technical settings", GroupOrder = 3)]
+        public bool LoggingEnabled { get; set; } = false;
     }
 }

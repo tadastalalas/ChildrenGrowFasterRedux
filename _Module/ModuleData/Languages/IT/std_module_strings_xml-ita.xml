@@ -8,8 +8,8 @@
 		<string id="CGFR_S7CDl3Ac" text="{randomChild.Name} ha acquisito il tratto {randomTrait.Name} con livello {randomTraitLevel}!" />
 		<string id="CGFR_YYayWvdK" text="Crescita Rapida dei Bambini Redux" />
 		<string id="CGFR_5GjemDpY" text="Impostazioni del tasso di crescita dei bambini" />
-		<string id="CGFR_xpz8K0H5" text="Incremento della crescita per giorni" />
-		<string id="CGFR_1ZWhgRlk" text="Regola quanti giorni aggiungere al giorno di crescita normale. Se lo imposti su 1, significa che i bambini invecchieranno due volte più velocemente. Giorno normale + 1 giorno = 2 giorni più vecchi in un giorno. [Predefinito: 1]" />
+		<string id="CGFR_xpz8K0H5" text="Tasso di crescita" />
+		<string id="CGFR_1ZWhgRlk" text="Tasso di crescita dei bambini. 1 = tasso normale; 2 = due volte più veloce; 3 = tasso di crescita tre volte più veloce e così via. [Default: 2]" />
 		<string id="CGFR_86Zt3waL" text="Quando l'eroe raggiunge la maggiore età?" />
 		<string id="CGFR_Aog3zurZ" text="Fai sapere a questa mod quando i bambini raggiungeranno la maggiore età. Perché? Perché se usi la mod 'Bannerlord Expanded - Children Expanded', c'è un'impostazione 'L'eroe raggiunge la maggiore età', rendi questa impostazione uguale a quella. [Predefinito: 18]" />
 		<string id="CGFR_88NRzszQ" text="Influenza solo i figli del giocatore" />

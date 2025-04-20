@@ -8,8 +8,8 @@
 		<string id="CGFR_S7CDl3Ac" text="{randomChild.Name} 獲得了特性 {randomTrait.Name}，等級為 {randomTraitLevel}！" />
 		<string id="CGFR_YYayWvdK" text="兒童快速成長 重製版" />
 		<string id="CGFR_5GjemDpY" text="兒童成長速度設置" />
-		<string id="CGFR_xpz8K0H5" text="按天數增加成長速度" />
-		<string id="CGFR_1ZWhgRlk" text="調整添加到正常成長天數的天數。如果設置為 1，意味著兒童的成長速度是正常的兩倍。正常天數 + 1 天 = 1 天內長大 2 天。[默認值: 1]" />
+		<string id="CGFR_xpz8K0H5" text="成長率" />
+		<string id="CGFR_1ZWhgRlk" text="兒童的生長速度。 1 = 正常速率； 2 = 速度快兩倍； 3 = 成長率快三倍，以此類推。 [預設值：2]" />
 		<string id="CGFR_86Zt3waL" text="英雄成年時的年齡？" />
 		<string id="CGFR_Aog3zurZ" text="讓此模組知道兒童成年時的年齡。為什麼？因為如果您使用了 'Bannerlord Expanded - Children Expanded' 模組，其中有一個設置 '英雄成年時的年齡'，請將此設置與該設置保持一致。[默認值: 18]" />
 		<string id="CGFR_88NRzszQ" text="僅影響玩家的孩子" />

@@ -8,8 +8,8 @@
 		<string id="CGFR_S7CDl3Ac" text="{randomChild.Name} ganhou o traço {randomTrait.Name} com nível {randomTraitLevel}!" />
 		<string id="CGFR_YYayWvdK" text="Crescimento Acelerado de Crianças Redux" />
 		<string id="CGFR_5GjemDpY" text="Configurações de Taxa de Crescimento Infantil" />
-		<string id="CGFR_xpz8K0H5" text="Impulso de Crescimento por Dias" />
-		<string id="CGFR_1ZWhgRlk" text="Ajusta quantos dias adicionar ao dia normal de crescimento. Se você definir como 1, significa que as crianças envelhecerão duas vezes mais rápido. Dia normal + 1 dia = 2 dias mais velhos em um dia. [Padrão: 1]" />
+		<string id="CGFR_xpz8K0H5" text="Taxa de crescimento" />
+		<string id="CGFR_1ZWhgRlk" text="Taxa de crescimento infantil. 1 = taxa normal; 2 = duas vezes mais rápido; 3 = três vezes mais rápido e assim por diante. [Padrão: 2]" />
 		<string id="CGFR_86Zt3waL" text="Quando o Herói Alcança a Maioridade?" />
 		<string id="CGFR_Aog3zurZ" text="Informe a este mod quando as crianças alcançarão a maioridade. Por quê? Porque se você usar o mod 'Bannerlord Expanded - Children Expanded', há uma configuração 'Herói Alcança a Maioridade', defina esta configuração igual àquela. [Padrão: 18]" />
 		<string id="CGFR_88NRzszQ" text="Apenas Crianças do Jogador" />
