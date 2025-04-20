@@ -35,7 +35,7 @@ namespace ChildrenGrowFasterRedux
 
         public override void OnGameEnd(Game game)
         {
-            var eventField = typeof(CampaignEvents).GetField("OnDailyTickEvent", BindingFlags.Static | BindingFlags.NonPublic);
+            var eventField = typeof(CampaignEvents).GetField("DailyTickEvent", BindingFlags.Static | BindingFlags.NonPublic);
             var eventDelegate = (MulticastDelegate)eventField?.GetValue(null);
             if (eventDelegate != null && eventDelegate.GetInvocationList().Length > 0)
             {
