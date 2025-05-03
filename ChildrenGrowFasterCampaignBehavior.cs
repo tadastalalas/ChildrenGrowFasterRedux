@@ -12,7 +12,7 @@ namespace ChildrenGrowFasterRedux
 {
     internal class ChildrenGrowFasterCampaignBehavior : CampaignBehaviorBase
     {
-        public override void RegisterEvents() => CampaignEvents.HourlyTickEvent.AddNonSerializedListener(this, OnDailyTickEvent);
+        public override void RegisterEvents() => CampaignEvents.DailyTickEvent.AddNonSerializedListener(this, OnDailyTickEvent);
 
         public override void SyncData(IDataStore dataStore) { }
 
