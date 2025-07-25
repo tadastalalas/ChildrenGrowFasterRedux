@@ -10,8 +10,6 @@
 		<string id="CGFR_5GjemDpY" text="Configurações de Taxa de Crescimento Infantil" />
 		<string id="CGFR_xpz8K0H5" text="Taxa de crescimento" />
 		<string id="CGFR_1ZWhgRlk" text="Taxa de crescimento infantil. 1 = taxa normal; 2 = duas vezes mais rápido; 3 = três vezes mais rápido e assim por diante. [Padrão: 2]" />
-		<string id="CGFR_86Zt3waL" text="Quando o Herói Alcança a Maioridade?" />
-		<string id="CGFR_Aog3zurZ" text="Informe a este mod quando as crianças alcançarão a maioridade. Por quê? Porque se você usar o mod 'Bannerlord Expanded - Children Expanded', há uma configuração 'Herói Alcança a Maioridade', defina esta configuração igual àquela. [Padrão: 18]" />
 		<string id="CGFR_88NRzszQ" text="Apenas Crianças do Jogador" />
 		<string id="CGFR_s9e0XtHk" text="O mod afeta apenas a taxa de crescimento das crianças do jogador. [Padrão: falso]" />
 		<string id="CGFR_MYAPs8YR" text="Crescimento Instantâneo de Crianças" />

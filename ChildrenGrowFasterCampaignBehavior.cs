@@ -7,6 +7,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using MCM.Abstractions.Base.Global;
+using TaleWorlds.CampaignSystem.GameComponents;
 
 namespace ChildrenGrowFasterRedux
 {
@@ -59,26 +60,26 @@ namespace ChildrenGrowFasterRedux
         private void ApplyGrowthRateToPlayerChildren()
         {
             LogMessage("ApplyGrowthRateToPlayerChildren() Called.");
-            ApplyGrowthRate(hero => hero.IsChild && hero.Age < settings.WhenHeroComesOfAge && (hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero));
+            ApplyGrowthRate(hero => hero.IsChild && hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge && (hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero));
         }
 
         private void ApplyGrowthRateToPlayerClanChildren()
         {
             LogMessage("ApplyGrowthRateToPlayerClan Children() Called.");
-            ApplyGrowthRate(hero => hero.IsChild && hero.Age < settings.WhenHeroComesOfAge && (hero.Clan == Hero.MainHero.Clan));
+            ApplyGrowthRate(hero => hero.IsChild && hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge && (hero.Clan == Hero.MainHero.Clan));
         }
 
         private void ApplyGrowthRateToAllChildren()
         {
             LogMessage("ApplyGrowthRateToAllChildren() Called.");
-            ApplyGrowthRate(hero => hero.IsChild && hero.Age < settings.WhenHeroComesOfAge);
+            ApplyGrowthRate(hero => hero.IsChild && hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge);
         }
 
         
 
         private void ApplyGrowthRateToEveryoneElse()
         {
-            ApplyGrowthRate(hero => hero.Age >= settings.WhenHeroComesOfAge);
+            ApplyGrowthRate(hero => hero.Age >= Campaign.Current.Models.AgeModel.HeroComesOfAge);
         }
 
         private void ApplyGrowthRate(Func<Hero, bool> heroFilter)
@@ -104,10 +105,10 @@ namespace ChildrenGrowFasterRedux
 
             foreach (Hero hero in heroes)
             {
-                if (hero.IsChild && hero.Age < settings.WhenHeroComesOfAge)
+                if (hero.IsChild && hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge)
                 {
                     CampaignTime currentTime = CampaignTime.Now;
-                    CampaignTime newBday = currentTime - CampaignTime.Years(settings.WhenHeroComesOfAge);
+                    CampaignTime newBday = currentTime - CampaignTime.Years(Campaign.Current.Models.AgeModel.HeroComesOfAge);
                     hero.SetBirthDay(newBday);
                     LogMessage($"{hero.Name} has instantly grown into an adult (Age: {hero.Age}).");
                 }
