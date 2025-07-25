@@ -7,7 +7,6 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using MCM.Abstractions.Base.Global;
-using TaleWorlds.CampaignSystem.GameComponents;
 
 namespace ChildrenGrowFasterRedux
 {
