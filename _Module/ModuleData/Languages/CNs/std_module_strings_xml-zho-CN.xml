@@ -32,7 +32,7 @@
 		<string id="CGFR_DlU01AjN" text="调整孩子出生所需的天数。[默认值: 36]" />
 		<string id="CGFR_DBnFt8A9" text="儿童特性数量检查" />
 		<string id="CGFR_kJimhLwp" text="儿童需要拥有多少个特性，模组才会停止检查是否可以添加新特性？[默认值: 3]" />
-		<string id="CGFR_xJ1yLMuy" text="" />
-		<string id="CGFR_IOUT6bW1" text="" />
+		<string id="CGFR_xJ1yLMuy" text="仅影响玩家氏族的孩子" />
+		<string id="CGFR_IOUT6bW1" text="模组仅影响玩家氏族孩子的成长速度。如果下方“仅影响玩家的孩子”选项也启用，则此选项将不起作用。[默认值: 假]" />
 	</strings>
 </base>

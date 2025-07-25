@@ -20,15 +20,19 @@ namespace ChildrenGrowFasterRedux
         [SettingPropertyGroup("{=CGFR_5GjemDpY}Children Growth Rate Settings", GroupOrder = 0)]
         public int WhenHeroComesOfAge { get; set; } = 18;
 
-        [SettingPropertyBool("{=CGFR_88NRzszQ}Affect Player Children Only", Order = 2, RequireRestart = false, HintText = "{=CGFR_s9e0XtHk}Mod only affects growth rate of player children. [Default: false]")]
+        [SettingPropertyBool("{=CGFR_xJ1yLMuy}Affect Player Clan Children Only", Order = 3, RequireRestart = false, HintText = "{=CGFR_IOUT6bW1}Mod only affects growth rate of player clan children. If Affect Player Children Only below option is also enabled, then this option will not work. [Default: false]")]
+        [SettingPropertyGroup("{=CGFR_5GjemDpY}Children Growth Rate Settings", GroupOrder = 0)]
+        public bool AffectOnlyPlayerClanChildren { get; set; } = false;
+
+        [SettingPropertyBool("{=CGFR_88NRzszQ}Affect Player Children Only", Order = 4, RequireRestart = false, HintText = "{=CGFR_s9e0XtHk}Mod only affects growth rate of player children. [Default: false]")]
         [SettingPropertyGroup("{=CGFR_5GjemDpY}Children Growth Rate Settings", GroupOrder = 0)]
         public bool AffectOnlyPlayerChildren { get; set; } = false;
 
-        [SettingPropertyBool("{=CGFR_MYAPs8YR}Instant Children Growth", Order = 3, RequireRestart = false, HintText = "{=CGFR_vMl3gSRM}Children will grow to adulthood instantly. [Default: false]")]
+        [SettingPropertyBool("{=CGFR_MYAPs8YR}Instant Children Growth", Order = 5, RequireRestart = false, HintText = "{=CGFR_vMl3gSRM}Children will grow to adulthood instantly. [Default: false]")]
         [SettingPropertyGroup("{=CGFR_5GjemDpY}Children Growth Rate Settings", GroupOrder = 0)]
         public bool DoChildGrowToAdultInstantly { get; set; } = false;
 
-        [SettingPropertyBool("{=CGFR_fdWNNbDe}Affect Everyone", Order = 4, RequireRestart = false, HintText = "{=CGFR_XFONu6ZR}Growth rate affects all children and all adults. [Default: false]")]
+        [SettingPropertyBool("{=CGFR_fdWNNbDe}Affect Everyone", Order = 6, RequireRestart = false, HintText = "{=CGFR_XFONu6ZR}Growth rate affects all children and all adults. [Default: false]")]
         [SettingPropertyGroup("{=CGFR_5GjemDpY}Children Growth Rate Settings", GroupOrder = 0)]
         public bool AffectEveryone { get; set; } = false;
 

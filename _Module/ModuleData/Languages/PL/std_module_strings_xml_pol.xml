@@ -32,7 +32,7 @@
 		<string id="CGFR_DlU01AjN" text="Dostosuj liczbę dni potrzebnych do narodzin dzieci. [Domyślnie: 36]" />
 		<string id="CGFR_DBnFt8A9" text="Sprawdzanie liczby cech dziecka" />
 		<string id="CGFR_kJimhLwp" text="Ile cech musi mieć dziecko, aby ten mod przestał sprawdzać, czy można dodać nową cechę? [Domyślnie: 3]" />
-		<string id="CGFR_xJ1yLMuy" text="" />
-		<string id="CGFR_IOUT6bW1" text="" />
+		<string id="CGFR_xJ1yLMuy" text="Wpływ tylko na dzieci klanu gracza" />
+		<string id="CGFR_IOUT6bW1" text="Mod wpływa tylko na tempo wzrostu dzieci klanu gracza. Jeśli poniższa opcja 'Wpływ tylko na dzieci gracza' jest również włączona, ta opcja nie będzie działać. [Domyślnie: fałsz]" />
 	</strings>
 </base>

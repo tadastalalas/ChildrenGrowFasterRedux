@@ -28,6 +28,8 @@ namespace ChildrenGrowFasterRedux
 
             if (settings.AffectOnlyPlayerChildren)
                 ApplyGrowthRateToPlayerChildren();
+            else if (settings.AffectOnlyPlayerClanChildren)
+                ApplyGrowthRateToPlayerClanChildren();
             else
                 ApplyGrowthRateToAllChildren();
 
@@ -58,6 +60,12 @@ namespace ChildrenGrowFasterRedux
         {
             LogMessage("ApplyGrowthRateToPlayerChildren() Called.");
             ApplyGrowthRate(hero => hero.IsChild && hero.Age < settings.WhenHeroComesOfAge && (hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero));
+        }
+
+        private void ApplyGrowthRateToPlayerClanChildren()
+        {
+            LogMessage("ApplyGrowthRateToPlayerClan Children() Called.");
+            ApplyGrowthRate(hero => hero.IsChild && hero.Age < settings.WhenHeroComesOfAge && (hero.Clan == Hero.MainHero.Clan));
         }
 
         private void ApplyGrowthRateToAllChildren()

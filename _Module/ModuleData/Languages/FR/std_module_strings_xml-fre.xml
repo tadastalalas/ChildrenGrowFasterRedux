@@ -32,7 +32,7 @@
 		<string id="CGFR_DlU01AjN" text="Ajustez le nombre de jours nécessaires pour que les enfants naissent. [Par défaut : 36]" />
 		<string id="CGFR_DBnFt8A9" text="Vérification du nombre de traits de l'enfant" />
 		<string id="CGFR_kJimhLwp" text="Combien de traits un enfant doit-il avoir pour que ce mod cesse de vérifier si un nouveau trait peut être ajouté ? [Par défaut : 3]" />
-		<string id="CGFR_xJ1yLMuy" text="" />
-		<string id="CGFR_IOUT6bW1" text="" />
+		<string id="CGFR_xJ1yLMuy" text="Affecter uniquement les enfants du clan du joueur" />
+		<string id="CGFR_IOUT6bW1" text="Le mod affecte uniquement le taux de croissance des enfants du clan du joueur. Si l'option « Affecter uniquement les enfants du joueur » ci-dessous est également activée, alors cette option ne fonctionnera pas. [Par défaut : faux]" />
 	</strings>
 </base>

@@ -32,7 +32,7 @@
 		<string id="CGFR_DlU01AjN" text="Ajusta el número de días que toma para que nazcan los niños. [Por defecto: 36]" />
 		<string id="CGFR_DBnFt8A9" text="Verificación de la Cantidad de Rasgos del Niño" />
 		<string id="CGFR_kJimhLwp" text="¿Cuántos rasgos debe tener un niño para que este mod deje de verificar si se puede agregar un nuevo rasgo? [Por defecto: 3]" />
-		<string id="CGFR_xJ1yLMuy" text="" />
-		<string id="CGFR_IOUT6bW1" text="" />
+		<string id="CGFR_xJ1yLMuy" text="Afectar solo a los hijos del clan del jugador" />
+		<string id="CGFR_IOUT6bW1" text="El mod solo afecta la tasa de crecimiento de los hijos del clan del jugador. Si la opción 'Afectar solo a los hijos del jugador' de abajo también está habilitada, entonces esta opción no funcionará. [Por defecto: falso]" />
 	</strings>
 </base>
