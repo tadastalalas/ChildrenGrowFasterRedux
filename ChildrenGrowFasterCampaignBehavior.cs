@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TaleWorlds.CampaignSystem.CharacterDevelopment;
+using MCM.Abstractions.Base.Global;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.CharacterDevelopment;
+using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
-using MCM.Abstractions.Base.Global;
 
 namespace ChildrenGrowFasterRedux
 {
@@ -121,32 +122,34 @@ namespace ChildrenGrowFasterRedux
             if (Hero.MainHero.Children == null || Hero.MainHero.Children.Count == 0)
                 return;
 
-            Hero randomChild = Hero.MainHero.Children[MBRandom.RandomInt(Hero.MainHero.Children.Count)];
+            Hero selectedChild = Hero.MainHero.Children[MBRandom.RandomInt(Hero.MainHero.Children.Count)];
 
-            if (randomChild.GetHeroTraits().ToString().Length > settings.ChildTraitCountCheck)
+            int traitCount = 0;
+
+            foreach (TraitObject trait in CampaignUIHelper.GetHeroTraits())
+            {
+                if (selectedChild.GetTraitLevel(trait) != 0)
+                    traitCount++;
+            }
+
+            if (traitCount > this.settings.ChildTraitCountCheck)
+            {
                 return;
+            }
 
-            TraitObject[] availableTraits = new TraitObject[]
+            TraitObject[] array = new TraitObject[]
             {
                 DefaultTraits.Mercy,
                 DefaultTraits.Generosity,
                 DefaultTraits.Honor,
                 DefaultTraits.Valor,
-                DefaultTraits.Calculating,
-                DefaultTraits.ScoutSkills,
-                DefaultTraits.RogueSkills,
-                DefaultTraits.SergeantCommandSkills,
-                DefaultTraits.KnightFightingSkills,
-                DefaultTraits.CavalryFightingSkills,
-                DefaultTraits.HorseArcherFightingSkills,
-                DefaultTraits.ArcherFIghtingSkills,
-                DefaultTraits.CrossbowmanStyle
+                DefaultTraits.Calculating
             };
 
-            TraitObject randomTrait = availableTraits[MBRandom.RandomInt(availableTraits.Length)];
-            int randomTraitLevel = MBRandom.RandomInt(-1, 3);
-            randomChild.SetTraitLevel(randomTrait, randomTraitLevel);
-            InformationManager.DisplayMessage(new InformationMessage(new TextObject("{=CGRR_S7CDl3Ac}{randomChild.Name} has gained the trait {randomTrait.Name} with level {randomTraitLevel}!").ToString()));
+            TraitObject traitToAdd = array[MBRandom.RandomInt(array.Length)];
+            int traitLevel = MBRandom.RandomInt(-1, 3);
+            selectedChild.SetTraitLevel(traitToAdd, traitLevel);
+            LogMessage(string.Format("{0} has gained the trait {1} with level {2}!", selectedChild.Name, traitToAdd.Name, traitLevel));
         }
 
         private void LogMessage(string message)
