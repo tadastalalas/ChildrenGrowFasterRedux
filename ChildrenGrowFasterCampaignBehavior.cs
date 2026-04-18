@@ -39,20 +39,22 @@ namespace ChildrenGrowFasterRedux
 
             if (settings.RandomTraitsForPlayerChildren)
             {
-                if (playerChildTraitAdded && daysSinceLastPlayerChildTraitAdded < settings.DaysBetweenNextTraitCanBeAdded)
+                if (playerChildTraitAdded)
                 {
-                    daysSinceLastPlayerChildTraitAdded++;
-                }
-                else
-                {
-                    daysSinceLastPlayerChildTraitAdded = 0;
-                    playerChildTraitAdded = false;
+                    if (daysSinceLastPlayerChildTraitAdded < settings.DaysBetweenNextTraitCanBeAdded)
+                    {
+                        daysSinceLastPlayerChildTraitAdded++;
+                    }
+                    else
+                    {
+                        daysSinceLastPlayerChildTraitAdded = 0;
+                        playerChildTraitAdded = false;
+                    }
                 }
 
                 if (!playerChildTraitAdded && MBRandom.RandomInt(0, 100) < settings.RandomTraitChance)
                 {
                     GiveRandomTraitToChild();
-                    playerChildTraitAdded = true;
                 }
             }
         }
@@ -74,8 +76,6 @@ namespace ChildrenGrowFasterRedux
             LogMessage("ApplyGrowthRateToAllChildren() Called.");
             ApplyGrowthRate(hero => hero.IsChild && hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge);
         }
-
-        
 
         private void ApplyGrowthRateToEveryoneElse()
         {
@@ -147,8 +147,13 @@ namespace ChildrenGrowFasterRedux
             };
 
             TraitObject traitToAdd = array[MBRandom.RandomInt(array.Length)];
-            int traitLevel = MBRandom.RandomInt(-1, 3);
+
+            // RandomInt upper bound is exclusive, so RandomInt(-1, 2) produces -1 or 1 only.
+            // We use RandomInt(0, 2) and map: 0 -> -1, 1 -> 1 to guarantee a non-zero level.
+            int traitLevel = MBRandom.RandomInt(0, 2) == 0 ? -1 : 1;
+
             selectedChild.SetTraitLevel(traitToAdd, traitLevel);
+            playerChildTraitAdded = true;
             LogMessage(string.Format("{0} has gained the trait {1} with level {2}!", selectedChild.Name, traitToAdd.Name, traitLevel));
         }
 
