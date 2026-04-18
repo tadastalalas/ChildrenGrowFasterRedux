@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using MCM.Abstractions.Base.Global;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.CharacterDevelopment;
-using TaleWorlds.CampaignSystem.ViewModelCollection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
-using TaleWorlds.Localization;
 
 namespace ChildrenGrowFasterRedux
 {
@@ -19,13 +16,17 @@ namespace ChildrenGrowFasterRedux
 
         private readonly SubModuleSettings settings = AttributeGlobalSettings<SubModuleSettings>.Instance ?? new SubModuleSettings();
 
-        private int daysSinceLastPlayerChildTraitAdded = 0;
-
-        private bool playerChildTraitAdded = false;
-
         private void OnDailyTickEvent()
         {
             LogMessage("OnDailyTickEvent() Called.");
+
+            // When AffectEveryone is on, all children are accelerated regardless of the Player/Clan-only toggles.
+            if (settings.AffectEveryone)
+            {
+                ApplyGrowthRateToAllChildren();
+                ApplyGrowthRateToEveryoneElse();
+                return;
+            }
 
             if (settings.AffectOnlyPlayerChildren)
                 ApplyGrowthRateToPlayerChildren();
@@ -33,53 +34,37 @@ namespace ChildrenGrowFasterRedux
                 ApplyGrowthRateToPlayerClanChildren();
             else
                 ApplyGrowthRateToAllChildren();
-
-            if (settings.AffectEveryone)
-                ApplyGrowthRateToEveryoneElse();
-
-            if (settings.RandomTraitsForPlayerChildren)
-            {
-                if (playerChildTraitAdded)
-                {
-                    if (daysSinceLastPlayerChildTraitAdded < settings.DaysBetweenNextTraitCanBeAdded)
-                    {
-                        daysSinceLastPlayerChildTraitAdded++;
-                    }
-                    else
-                    {
-                        daysSinceLastPlayerChildTraitAdded = 0;
-                        playerChildTraitAdded = false;
-                    }
-                }
-
-                if (!playerChildTraitAdded && MBRandom.RandomInt(0, 100) < settings.RandomTraitChance)
-                {
-                    GiveRandomTraitToChild();
-                }
-            }
         }
 
         private void ApplyGrowthRateToPlayerChildren()
         {
             LogMessage("ApplyGrowthRateToPlayerChildren() Called.");
-            ApplyGrowthRate(hero => hero.IsChild && hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge && (hero.Father == Hero.MainHero || hero.Mother == Hero.MainHero));
+            int comesOfAge = Campaign.Current.Models.AgeModel.HeroComesOfAge;
+            Hero player = Hero.MainHero;
+            ApplyGrowthRate(hero => hero.IsChild && hero.Age < comesOfAge && (hero.Father == player || hero.Mother == player));
         }
 
         private void ApplyGrowthRateToPlayerClanChildren()
         {
-            LogMessage("ApplyGrowthRateToPlayerClan Children() Called.");
-            ApplyGrowthRate(hero => hero.IsChild && hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge && (hero.Clan == Hero.MainHero.Clan));
+            LogMessage("ApplyGrowthRateToPlayerClanChildren() Called.");
+            int comesOfAge = Campaign.Current.Models.AgeModel.HeroComesOfAge;
+            Clan playerClan = Hero.MainHero.Clan;
+            ApplyGrowthRate(hero => hero.IsChild && hero.Age < comesOfAge && hero.Clan == playerClan);
         }
 
         private void ApplyGrowthRateToAllChildren()
         {
             LogMessage("ApplyGrowthRateToAllChildren() Called.");
-            ApplyGrowthRate(hero => hero.IsChild && hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge);
+            int comesOfAge = Campaign.Current.Models.AgeModel.HeroComesOfAge;
+            ApplyGrowthRate(hero => hero.IsChild && hero.Age < comesOfAge);
         }
 
         private void ApplyGrowthRateToEveryoneElse()
         {
-            ApplyGrowthRate(hero => hero.Age >= Campaign.Current.Models.AgeModel.HeroComesOfAge);
+            LogMessage("ApplyGrowthRateToEveryoneElse() Called.");
+            int comesOfAge = Campaign.Current.Models.AgeModel.HeroComesOfAge;
+            bool excludeMain = settings.ExcludeMainHeroFromAdultAging;
+            ApplyGrowthRate(hero => hero.Age >= comesOfAge && !(excludeMain && hero == Hero.MainHero));
         }
 
         private void ApplyGrowthRate(Func<Hero, bool> heroFilter)
@@ -92,10 +77,13 @@ namespace ChildrenGrowFasterRedux
                 return;
             }
 
-            float additionalDaysPerDay = settings.GrowthRate;
+            float additionalDaysPerDay = settings.GrowthRate - 1f;
+            if (additionalDaysPerDay == 0f)
+                return;
+
             foreach (Hero hero in Hero.AllAliveHeroes.Where(heroFilter))
             {
-                hero.SetBirthDay(hero.BirthDay - CampaignTime.Days(additionalDaysPerDay - 1));
+                hero.SetBirthDay(hero.BirthDay - CampaignTime.Days(additionalDaysPerDay));
             }
         }
 
@@ -103,58 +91,14 @@ namespace ChildrenGrowFasterRedux
         {
             LogMessage("ApplyInstantGrowthToChildren() Called.");
 
+            int comesOfAge = Campaign.Current.Models.AgeModel.HeroComesOfAge;
+            CampaignTime newBday = CampaignTime.Now - CampaignTime.Years(comesOfAge);
+
             foreach (Hero hero in heroes)
             {
-                if (hero.IsChild && hero.Age < Campaign.Current.Models.AgeModel.HeroComesOfAge)
-                {
-                    CampaignTime currentTime = CampaignTime.Now;
-                    CampaignTime newBday = currentTime - CampaignTime.Years(Campaign.Current.Models.AgeModel.HeroComesOfAge);
-                    hero.SetBirthDay(newBday);
-                    LogMessage($"{hero.Name} has instantly grown into an adult (Age: {hero.Age}).");
-                }
+                hero.SetBirthDay(newBday);
+                LogMessage($"{hero.Name} has instantly grown into an adult (Age: {hero.Age}).");
             }
-        }
-
-        private void GiveRandomTraitToChild()
-        {
-            LogMessage("GiveRandomTraitToChild() Called.");
-
-            if (Hero.MainHero.Children == null || Hero.MainHero.Children.Count == 0)
-                return;
-
-            Hero selectedChild = Hero.MainHero.Children[MBRandom.RandomInt(Hero.MainHero.Children.Count)];
-
-            int traitCount = 0;
-
-            foreach (TraitObject trait in CampaignUIHelper.GetHeroTraits())
-            {
-                if (selectedChild.GetTraitLevel(trait) != 0)
-                    traitCount++;
-            }
-
-            if (traitCount > this.settings.ChildTraitCountCheck)
-            {
-                return;
-            }
-
-            TraitObject[] array = new TraitObject[]
-            {
-                DefaultTraits.Mercy,
-                DefaultTraits.Generosity,
-                DefaultTraits.Honor,
-                DefaultTraits.Valor,
-                DefaultTraits.Calculating
-            };
-
-            TraitObject traitToAdd = array[MBRandom.RandomInt(array.Length)];
-
-            // RandomInt upper bound is exclusive, so RandomInt(-1, 2) produces -1 or 1 only.
-            // We use RandomInt(0, 2) and map: 0 -> -1, 1 -> 1 to guarantee a non-zero level.
-            int traitLevel = MBRandom.RandomInt(0, 2) == 0 ? -1 : 1;
-
-            selectedChild.SetTraitLevel(traitToAdd, traitLevel);
-            playerChildTraitAdded = true;
-            LogMessage(string.Format("{0} has gained the trait {1} with level {2}!", selectedChild.Name, traitToAdd.Name, traitLevel));
         }
 
         private void LogMessage(string message)

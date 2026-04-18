@@ -1,11 +1,7 @@
-﻿using TaleWorlds.CampaignSystem;
-using TaleWorlds.Core;
+﻿using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using HarmonyLib;
-using TaleWorlds.Library;
-using TaleWorlds.Localization;
-using System.Reflection;
-using System;
+using TaleWorlds.CampaignSystem;
 
 namespace ChildrenGrowFasterRedux
 {
@@ -30,17 +26,6 @@ namespace ChildrenGrowFasterRedux
                 CampaignGameStarter campaignGameStarter = (CampaignGameStarter)gameStarterObject;
                 campaignGameStarter.AddBehavior(new ChildrenGrowFasterCampaignBehavior());
             }
-        }
-
-        public override void OnGameEnd(Game game)
-        {
-            var eventField = typeof(CampaignEvents).GetField("DailyTickEvent", BindingFlags.Static | BindingFlags.NonPublic);
-            var eventDelegate = (MulticastDelegate)eventField?.GetValue(null);
-            if (eventDelegate != null && eventDelegate.GetInvocationList().Length > 0)
-            {
-                CampaignEvents.DailyTickEvent.ClearListeners(this);
-            }
-            base.OnGameEnd(game);
         }
     }
 }
