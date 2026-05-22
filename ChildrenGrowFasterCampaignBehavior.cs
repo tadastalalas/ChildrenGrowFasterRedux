@@ -20,7 +20,6 @@ namespace ChildrenGrowFasterRedux
         {
             LogMessage("OnDailyTickEvent() Called.");
 
-            // When AffectEveryone is on, all children are accelerated regardless of the Player/Clan-only toggles.
             if (settings.AffectEveryone)
             {
                 ApplyGrowthRateToAllChildren();
