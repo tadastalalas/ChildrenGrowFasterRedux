@@ -15,7 +15,9 @@
 		<string id="CGFR_MYAPs8YR" text="兒童即時成長" />
 		<string id="CGFR_vMl3gSRM" text="兒童將立即成長為成年人。[默認值: 假]" />
 		<string id="CGFR_fdWNNbDe" text="影響所有人" />
-		<string id="CGFR_XFONu6ZR" text="成長速度影響所有兒童和所有成年人。[默認值: 假]" />
+		<string id="CGFR_XFONu6ZR" text="成長速度影響所有兒童和所有成年人。使用下方選項保護主角。[默認值: 假]" />
+		<string id="CGFR_kYpzWk1A" text="將主角排除在成年人老化之外" />
+		<string id="CGFR_qJk7L9rN" text="啟用「影響所有人」時，主角不受加速老化影響。[默認值: 假]" />
 		<string id="CGFR_IXejEQz9" text="隨機特性" />
 		<string id="CGFR_LAO16M20" text="玩家孩子的隨機特性" />
 		<string id="CGFR_7aDvIEFA" text="為玩家的孩子啟用隨機特性。[默認值: 假]" />

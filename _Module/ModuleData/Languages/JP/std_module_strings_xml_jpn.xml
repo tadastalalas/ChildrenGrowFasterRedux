@@ -15,7 +15,9 @@
 		<string id="CGFR_MYAPs8YR" text="子供の即時成長" />
 		<string id="CGFR_vMl3gSRM" text="子供は即座に成人します。[デフォルト: 偽]" />
 		<string id="CGFR_fdWNNbDe" text="全員に影響" />
-		<string id="CGFR_XFONu6ZR" text="成長率はすべての子供とすべての大人に影響します。[デフォルト: 偽]" />
+		<string id="CGFR_XFONu6ZR" text="成長率はすべての子供とすべての大人に影響します。主人公を保護するには下のオプションを使用してください。[デフォルト: 偽]" />
+		<string id="CGFR_kYpzWk1A" text="主人公を大人の加齢から除外" />
+		<string id="CGFR_qJk7L9rN" text="「全員に影響」が有効な場合、主人公は加速した加齢の対象外になります。[デフォルト: 偽]" />
 		<string id="CGFR_IXejEQz9" text="ランダム特性" />
 		<string id="CGFR_LAO16M20" text="プレイヤーの子供のランダム特性" />
 		<string id="CGFR_7aDvIEFA" text="プレイヤーの子供にランダム特性を有効にします。[デフォルト: 偽]" />

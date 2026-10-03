@@ -15,7 +15,9 @@
 		<string id="CGFR_MYAPs8YR" text="Sofortiges Wachstum von Kindern" />
 		<string id="CGFR_vMl3gSRM" text="Kinder werden sofort erwachsen. [Standard: falsch]" />
 		<string id="CGFR_fdWNNbDe" text="Alle beeinflussen" />
-		<string id="CGFR_XFONu6ZR" text="Die Wachstumsrate beeinflusst alle Kinder und alle Erwachsenen. [Standard: falsch]" />
+		<string id="CGFR_XFONu6ZR" text="Die Wachstumsrate beeinflusst alle Kinder und alle Erwachsenen. Nutze die Option unten, um den Haupthelden zu schützen. [Standard: falsch]" />
+		<string id="CGFR_kYpzWk1A" text="Haupthelden vom Altern der Erwachsenen ausschließen" />
+		<string id="CGFR_qJk7L9rN" text="Wenn „Alle beeinflussen“ aktiviert ist, wird der Hauptheld vom beschleunigten Altern ausgenommen. [Standard: falsch]" />
 		<string id="CGFR_IXejEQz9" text="Zufällige Eigenschaften" />
 		<string id="CGFR_LAO16M20" text="Zufällige Eigenschaften für Kinder des Spielers" />
 		<string id="CGFR_7aDvIEFA" text="Aktiviert zufällige Eigenschaften für Kinder des Spielers. [Standard: falsch]" />

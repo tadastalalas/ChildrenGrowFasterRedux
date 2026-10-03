@@ -28,7 +28,7 @@ namespace ChildrenGrowFasterRedux
         [SettingPropertyGroup("{=CGFR_5GjemDpY}Children Growth Rate Settings", GroupOrder = 0)]
         public bool DoChildGrowToAdultInstantly { get; set; } = false;
 
-        [SettingPropertyBool("{=CGFR_fdWNNbDe}Affect Everyone", Order = 4, RequireRestart = false, HintText = "{=CGFR_XFONu6ZR}Growth rate affects ALL children AND all adults (overrides the Player/Clan-only toggles for children). The main hero is excluded from adult aging to avoid premature death. [Default: false]")]
+        [SettingPropertyBool("{=CGFR_fdWNNbDe}Affect Everyone", Order = 4, RequireRestart = false, HintText = "{=CGFR_XFONu6ZR}Growth rate affects ALL children AND all adults (overrides the Player/Clan-only toggles for children). Use 'Exclude Main Hero From Adult Aging' below to protect the main hero. [Default: false]")]
         [SettingPropertyGroup("{=CGFR_5GjemDpY}Children Growth Rate Settings", GroupOrder = 0)]
         public bool AffectEveryone { get; set; } = false;
 

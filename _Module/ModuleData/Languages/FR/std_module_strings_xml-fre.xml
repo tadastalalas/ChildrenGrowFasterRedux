@@ -15,7 +15,9 @@
 		<string id="CGFR_MYAPs8YR" text="Croissance instantanée des enfants" />
 		<string id="CGFR_vMl3gSRM" text="Les enfants grandiront instantanément jusqu'à l'âge adulte. [Par défaut : faux]" />
 		<string id="CGFR_fdWNNbDe" text="Affecter tout le monde" />
-		<string id="CGFR_XFONu6ZR" text="Le taux de croissance affecte tous les enfants et tous les adultes. [Par défaut : faux]" />
+		<string id="CGFR_XFONu6ZR" text="Le taux de croissance affecte tous les enfants et tous les adultes. Utilisez l'option ci-dessous pour protéger le héros principal. [Par défaut : faux]" />
+		<string id="CGFR_kYpzWk1A" text="Exclure le héros principal du vieillissement des adultes" />
+		<string id="CGFR_qJk7L9rN" text="Lorsque « Affecter tout le monde » est activé, exclut le héros principal du vieillissement accéléré. [Par défaut : faux]" />
 		<string id="CGFR_IXejEQz9" text="Traits aléatoires" />
 		<string id="CGFR_LAO16M20" text="Traits aléatoires pour les enfants du joueur" />
 		<string id="CGFR_7aDvIEFA" text="Active les traits aléatoires pour les enfants du joueur. [Par défaut : faux]" />

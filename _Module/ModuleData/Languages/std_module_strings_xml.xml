@@ -15,7 +15,9 @@
 		<string id="CGFR_MYAPs8YR" text="Instant Children Growth" />
 		<string id="CGFR_vMl3gSRM" text="Children will grow to adulthood instantly. [Default: false]" />
 		<string id="CGFR_fdWNNbDe" text="Affect Everyone" />
-		<string id="CGFR_XFONu6ZR" text="Growth rate affects all children and all adults. [Default: false]" />
+		<string id="CGFR_XFONu6ZR" text="Growth rate affects all children and all adults. Use 'Exclude Main Hero From Adult Aging' below to protect the main hero. [Default: false]" />
+		<string id="CGFR_kYpzWk1A" text="Exclude Main Hero From Adult Aging" />
+		<string id="CGFR_qJk7L9rN" text="When Affect Everyone is enabled, exclude the main hero from accelerated aging. [Default: false]" />
 		<string id="CGFR_IXejEQz9" text="Random Traits" />
 		<string id="CGFR_LAO16M20" text="Random Traits For Player Children" />
 		<string id="CGFR_7aDvIEFA" text="Enables random traits for player children. [Default: false]" />
